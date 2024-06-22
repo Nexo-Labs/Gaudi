@@ -1,3 +1,3 @@
 // Reexport your entry components here
 
-export * from '../components/Header.svelte';
+export { default as Header } from '@compo/Header.svelte';
