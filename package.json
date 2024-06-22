@@ -1,5 +1,5 @@
 {
-  "name": "gaudi",
+  "name": "@Nexo-Labs/gaudi",
   "version": "0.0.1",
   "scripts": {
     "dev": "vite dev",
@@ -16,6 +16,9 @@
     "test:unit": "vitest",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
   },
   "exports": {
     ".": {
