@@ -1,4 +1,5 @@
 // Reexport your entry components here
 
-import Header from '@compo/Header.svelte';
+import Header from '../components/Header.svelte';
+
 export { Header };
