@@ -21,11 +21,17 @@ jobs:
         with:
           node-version: '20.x'
 
+      - name: Create .env file
+        run: echo "STORYBOOK_FIGMA_ACCESS_TOKEN=${{ secrets.STORYBOOK_FIGMA_ACCESS_TOKEN }}" > .env
+
+      - name: Echo .env file
+        run: cat .env
+
       - uses: bitovi/github-actions-storybook-to-github-pages@v1.0.3
-        env:
-          STORYBOOK_FIGMA_ACCESS_TOKEN: ${{ secrets.STORYBOOK_FIGMA_ACCESS_TOKEN }}
         with:
-          install_command: yarn install 
-          build_command: STORYBOOK_FIGMA_ACCESS_TOKEN=${{ secrets.STORYBOOK_FIGMA_ACCESS_TOKEN }} yarn build-storybook
+          install_command: yarn install
+          build_command: yarn build-storybook
           path: storybook-static
           checkout: false
+        env:
+          STORYBOOK_FIGMA_ACCESS_TOKEN: ${{ secrets.STORYBOOK_FIGMA_ACCESS_TOKEN }}
