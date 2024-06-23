@@ -12,7 +12,7 @@ export default defineConfig({
 	},
 	resolve: {
 		alias: {
-			'@compo': path.resolve('src/components')
+			'@lib': path.resolve('src/lib')
 		}
 	},
 });
