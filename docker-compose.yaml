@@ -1,11 +1,9 @@
 services:
-  dev:
+  storybook:
     build:
       context: .
     ports:
-      - 5173:5173
-      - 4173:4173
-      - 6006:6006
+      - 80:8080
     networks:
       - outside
 networks:

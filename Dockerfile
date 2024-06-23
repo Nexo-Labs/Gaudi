@@ -25,6 +25,6 @@ COPY yarn.lock .
 
 # Clean install all node modules
 RUN yarn install
-RUN yarn build
+RUN yarn build-storybook
 
-CMD ["sh", "/start.sh"]
+CMD ["npx", "http-server", "./storybook-static"]
