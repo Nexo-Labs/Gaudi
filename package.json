@@ -1,6 +1,6 @@
 {
   "name": "@nexo-labs/gaudi",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "scripts": {
     "dev": "vite dev",
     "build": "vite build && npm run package",
@@ -23,7 +23,7 @@
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "default": "./dist/index.js"
+      "svelte": "./dist/index.js"
     }
   },
   "files": [
