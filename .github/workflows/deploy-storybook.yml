@@ -26,6 +26,6 @@ jobs:
           STORYBOOK_FIGMA_ACCESS_TOKEN: ${{ secrets.STORYBOOK_FIGMA_ACCESS_TOKEN }}
         with:
           install_command: yarn install 
-          build_command: yarn build-storybook
+          build_command: STORYBOOK_FIGMA_ACCESS_TOKEN=${{ secrets.STORYBOOK_FIGMA_ACCESS_TOKEN }} yarn build-storybook
           path: storybook-static
           checkout: false
