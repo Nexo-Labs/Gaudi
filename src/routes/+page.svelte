@@ -1,4 +1,6 @@
 <script>
+	import MainSection from "lib/main-section/MainSection.svelte";
+
 	
 </script>
 
@@ -8,5 +10,5 @@
 </svelte:head>
 
 <section>
-
+	<MainSection></MainSection>
 </section>

@@ -1,6 +1,6 @@
-    @tailwind base;
-    @tailwind components;
-    @tailwind utilities;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 
 @font-face {
@@ -11,8 +11,8 @@
 }
       
 @font-face {
-    font-family: 'Inter';
-    src: url('./assets/fonts/Inter-Regular.ttf') format('truetype');
+    font-family: 'YesevaOne';
+    src: url('./assets/fonts/YesevaOne.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
 }

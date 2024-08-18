@@ -1,0 +1,41 @@
+<script lang="ts">
+  	import '../tailwind.css';
+
+	import NavButton from 'lib/common/NavButton.svelte';
+	import ContentWrapper from 'lib/common/ContentWrapper.svelte';
+	import escohotadoFumandoImg from '../assets/img/escohotado-fumando.png';
+</script>
+
+
+<style>
+    .fade-in {
+        animation: fadeIn 2s ease-out;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+</style>
+
+<div class="w-full bg-generic-main h-96">
+    <ContentWrapper classname="w-full h-96 relative">
+        <img
+            class="absolute right-0 h-full object-cover fade-in"
+            src={escohotadoFumandoImg}
+            alt="Antonio Escohotado fumando"
+        />
+        <div class="absolute left-0 top-0 w-1/2 h-full flex flex-col md:justify-center p-6 pt-12 md:pt-0">
+            <div class="flex-col items-start gap-6 flex">
+                <h1 class="text-title-primary text-4xl  md:text-5xl font-normal font-yesevaone leading-tight">
+                    Antonio Escohotado
+                </h1>
+                <p class="hidden sm:block text-black text-base font-normal font-montserrat leading-normal">
+                    Filósofo y ensayista español, dedicó su vida a explorar y desafiar las convenciones
+                    sociales.
+                </p>
+                <NavButton text="Descubre su legado" variant="secondary" noBreak={true}/>
+            </div>
+        </div>
+    </ContentWrapper>
+</div>

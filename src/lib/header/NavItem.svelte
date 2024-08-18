@@ -5,7 +5,7 @@
 
 <a
 	{href}
-	class="text-black text-base font-normal font-['Montserrat'] leading-none whitespace-nowrap flex-shrink-0"
+	class="text-black text-base font-normal font-montserrat leading-none whitespace-nowrap flex-shrink-0"
 >
 	{text}
 </a>
