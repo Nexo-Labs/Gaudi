@@ -1,6 +1,6 @@
 // Reexport your entry components here
 
 import './tailwind.css'
-import Header from './Header.svelte';
+import Header from './header/Header.svelte';
 
 export { Header };
