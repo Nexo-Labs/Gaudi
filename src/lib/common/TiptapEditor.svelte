@@ -2,6 +2,16 @@
 	import { onMount, onDestroy } from 'svelte';
 	import { Editor } from '@tiptap/core';
 	import StarterKit from '@tiptap/starter-kit';
+	import Image from '@tiptap/extension-image'
+	import Youtube from '@tiptap/extension-youtube'
+
+	import TextAlign from '@tiptap/extension-text-align'
+	import Typography from '@tiptap/extension-typography'
+	import HorizontalRule from '@tiptap/extension-horizontal-rule'
+	import CodeBlock from '@tiptap/extension-code-block'
+	import Blockquote from '@tiptap/extension-blockquote'
+	import TextStyle from '@tiptap/extension-text-style'
+	import FontFamily from '@tiptap/extension-font-family'
 
 	let element: any;
 	let editor: Editor;
@@ -9,7 +19,18 @@
 	onMount(() => {
 		editor = new Editor({
 			element: element,
-			extensions: [StarterKit],
+			extensions: [
+				StarterKit,
+				Image,
+				Youtube,
+				TextAlign,
+				Typography,
+				HorizontalRule,
+				CodeBlock,
+				Blockquote,
+				TextStyle,
+				FontFamily
+			],
 			editorProps: {
 				attributes: {
 				class: 'prose prose-sm sm:prose-base lg:prose-lg xl:prose-2xl m-5 focus:outline-none',
