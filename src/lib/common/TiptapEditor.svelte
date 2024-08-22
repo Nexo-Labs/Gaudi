@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount, onDestroy } from 'svelte';
-	import { Editor } from '@tiptap/core';
+	import { Editor  } from '@tiptap/core';
 	import StarterKit from '@tiptap/starter-kit';
 	import Image from '@tiptap/extension-image'
 	import Youtube from '@tiptap/extension-youtube'
@@ -12,6 +12,7 @@
 	import Blockquote from '@tiptap/extension-blockquote'
 	import TextStyle from '@tiptap/extension-text-style'
 	import FontFamily from '@tiptap/extension-font-family'
+	import { ColumnsExtension } from '@tiptap-extend/columns';
 
 	let element: any;
 	let editor: Editor;
@@ -19,6 +20,7 @@
 	onMount(() => {
 		editor = new Editor({
 			element: element,
+			editable: true,
 			extensions: [
 				StarterKit,
 				Image,
@@ -29,6 +31,7 @@
 				CodeBlock,
 				Blockquote,
 				TextStyle,
+				ColumnsExtension,
 				FontFamily
 			],
 			editorProps: {
@@ -107,4 +110,25 @@
 		background: black;
 		color: white;
 	}
+
+	.ProseMirror .column-block {
+		width: 100%;
+		display: grid;
+		grid-auto-flow: column;
+		grid-auto-columns: 1fr;
+		gap: 24px;
+		padding: 8px 0;
+	}
+
+	.ProseMirror .column {
+		overflow: hidden;
+		padding: 8px;
+		margin: -8px;
+	}
+
+	.ProseMirror-focused .column {
+		border: 1px gray dashed;
+		border-radius: 8px;
+	}
+
 </style>

@@ -8,8 +8,6 @@
 	<meta name="description" content="Svelte demo app" />
 </svelte:head>
 
-<section>
-    <ContentWrapper classname="w-full h-96 relative" backgroundClassname="bg-generic-main">
+    <ContentWrapper classname="w-full h-full" backgroundClassname="bg-generic-main">
         <TiptapEditor/>
     </ContentWrapper>
-</section>
