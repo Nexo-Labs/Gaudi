@@ -33,5 +33,6 @@ jobs:
 
     - name: Publish package
       run: yarn publish --non-interactive
+      continue-on-error: true
       env:
         NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
