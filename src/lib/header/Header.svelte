@@ -4,8 +4,12 @@
 	import NavButton from 'lib/common/NavButton.svelte';
 	import NavItem from './NavItem.svelte';
 	import HamburgerMenu from './HamburgerMenu.svelte';
+	import LoginButton from './login_button.svelte';
+	import type { SessionModel } from '$src/domain/session-model.js';
+	import LogoutButton from './logout_button.svelte';
 
 	let isMenuOpen = false;
+	export let session: SessionModel | undefined;
 
 	function toggleMenu() {
 		isMenuOpen = !isMenuOpen;
@@ -24,8 +28,13 @@
 			<NavItem href="/videos" text="Videos" />
 			<NavItem href="/eventos" text="Eventos" />
 			<div class="h-8 justify-start items-center gap-2.5 inline-flex">
-				<NavButton href="/la-emboscadura" text="La emboscadura" variant="primary" />
-				<NavButton href="/unete" text="Únete a la comunidad" variant="secondary" />
+				<NavButton href="https://laemboscadura.com/" text="La emboscadura" variant="primary" />
+				{#if session?.user}
+				<LogoutButton />
+				{:else}
+				<LoginButton />
+				{/if}
+
 			</div>
 		</div>
 	</nav>

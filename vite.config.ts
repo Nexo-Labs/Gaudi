@@ -10,9 +10,4 @@ export default defineConfig({
 	test: {
 		include: ['src/**/*.{test,spec}.{js,ts}']
 	},
-	resolve: {
-		alias: {
-			'lib': path.resolve('src/lib')
-		}
-	},
 });
