@@ -3,7 +3,8 @@
   "version": "0.0.17",
   "scripts": {
     "dev": "vite dev",
-    "build": "vite build && npm run package",
+    "build": "vite build",
+    "build-package": "vite build && npm run package",
     "preview": "vite preview",
     "package": "svelte-kit sync && svelte-package && publint",
     "prepublishOnly": "npm run package",
@@ -44,7 +45,7 @@
     "@storybook/svelte": "^8.1.10",
     "@storybook/sveltekit": "^8.1.10",
     "@storybook/test": "^8.1.10",
-    "@sveltejs/adapter-auto": "^3.0.0",
+    "@sveltejs/adapter-node": "^5.2.2",
     "@sveltejs/kit": "^2.0.0",
     "@sveltejs/package": "^2.0.0",
     "@sveltejs/vite-plugin-svelte": "^3.0.0",
@@ -78,19 +79,20 @@
     ]
   },
   "dependencies": {
+    "@sveltejs/adapter-node": "^5.2.2",
     "@tailwindcss/typography": "^0.5.14",
+    "@tiptap-extend/columns": "^2.1.6",
     "@tiptap/core": "^2.6.5",
-    "@tiptap/pm": "^2.6.5",
-    "@tiptap/starter-kit": "^2.6.5",
+    "@tiptap/extension-blockquote": "^2.6.5",
+    "@tiptap/extension-code-block": "^2.6.5",
+    "@tiptap/extension-font-family": "^2.6.5",
+    "@tiptap/extension-horizontal-rule": "^2.6.5",
     "@tiptap/extension-image": "^2.6.5",
     "@tiptap/extension-text-align": "^2.6.5",
     "@tiptap/extension-text-style": "^2.6.5",
+    "@tiptap/extension-typography": "^2.6.5",
     "@tiptap/extension-youtube": "^2.6.5",
-    "@tiptap/extension-horizontal-rule": "^2.6.5",
-    "@tiptap/extension-font-family": "^2.6.5",
-    "@tiptap/extension-blockquote": "^2.6.5",
-    "@tiptap-extend/columns": "^2.1.6",
-    "@tiptap/extension-code-block": "^2.6.5",
-    "@tiptap/extension-typography": "^2.6.5"
+    "@tiptap/pm": "^2.6.5",
+    "@tiptap/starter-kit": "^2.6.5"
   }
 }
