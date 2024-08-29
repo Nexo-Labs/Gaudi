@@ -2,8 +2,9 @@ name: Publish NPM Package
 
 on:
   push:
-    branches:
-      - main # O la rama que uses para publicar
+    tags:
+      - 'v*'
+
 
 jobs:
   publish:
