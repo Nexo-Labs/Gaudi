@@ -9,4 +9,4 @@ COPY . ./
 
 RUN yarn build
 
-CMD [ "node", "build" ]
+CMD ["sh", "-c", "node --env-file=/app/.env build"]
