@@ -96,6 +96,7 @@
     "@tiptap/extension-youtube": "^2.6.5",
     "@tiptap/pm": "^2.6.5",
     "@tiptap/starter-kit": "^2.6.5",
-    "jwt-decode": "^4.0.0"
+    "jwt-decode": "^4.0.0",
+    "stripe": "^16.9.0"
   }
 }
