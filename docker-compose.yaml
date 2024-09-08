@@ -18,9 +18,10 @@ services:
       STRIPE_WEBHOOK_SECRET: ${STRIPE_WEBHOOK_SECRET}
       DOMAIN: localhost
 
-      DATABASE_URL: postgresql://admin:devsecret@localhost:5432/escota_dev_deb?schema=public
+      DATABASE_URL: postgresql://admin:devsecret@escota_db:5432/escota_dev_deb?schema=public
 
   postgres:
+    container_name: escota_db
     image: postgres:14-alpine
     ports:
       - 5432:5432

@@ -13,5 +13,7 @@ do
   fi
 done
 
+#Ejecutamos las migraciones nuevas
+yarn prisma migrate deploy
 # Ejecutar el comando que se pase como argumento
 exec "$@"
