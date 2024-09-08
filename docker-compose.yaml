@@ -6,14 +6,16 @@ services:
     ports:
       - 3000:3000
     platform: linux/amd64
+    env_file:
+      - ./.env
     environment:
-      PUBLIC_AUTH_KEYCLOAK_ID: web
-      PUBLIC_AUTH_SECRET: PUBLIC_AUTH_SECRET
-      PUBLIC_AUTH_KEYCLOAK_SECRET: PUBLIC_AUTH_KEYCLOAK_SECRET
+      PUBLIC_AUTH_KEYCLOAK_ID: ${PUBLIC_AUTH_KEYCLOAK_ID}
+      PUBLIC_AUTH_KEYCLOAK_SECRET: ${PUBLIC_AUTH_KEYCLOAK_SECRET}
+      PUBLIC_AUTH_SECRET: ${PUBLIC_AUTH_SECRET}
       PUBLIC_AUTH_KEYCLOAK_ISSUER: https://auth.nexolabs.xyz/realms/Escohotado
 
-      STRIPE_SECRET_KEY: STRIPE_SECRET_KEY
-      STRIPE_WEBHOOK_SECRET: fe
+      STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY}
+      STRIPE_WEBHOOK_SECRET: ${STRIPE_WEBHOOK_SECRET}
       DOMAIN: localhost
 
       DATABASE_URL: postgresql://admin:devsecret@localhost:5432/escota_dev_deb?schema=public

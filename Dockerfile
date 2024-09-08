@@ -29,4 +29,4 @@ RUN chmod +x /app/scripts/entrypoint.sh
 
 
 ENTRYPOINT [ "/app/scripts/entrypoint.sh" ]
-CMD ["node", "build"]
+CMD ["sh", "-c", "node --env-file=/app/.env build"]
