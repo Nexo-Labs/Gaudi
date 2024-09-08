@@ -7,8 +7,7 @@ export default defineConfig({
 	plugins: [sentrySvelteKit({
         sourceMapsUploadOptions: {
             org: "nexo-labs",
-            project: "escohotado",
-            url: "https://sentry.io/"
+            project: "escohotado"
         }
     }), sveltekit()],
 	server: {

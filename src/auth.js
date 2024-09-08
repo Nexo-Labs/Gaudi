@@ -1,6 +1,10 @@
 import { SvelteKitAuth } from "@auth/sveltekit";
 import Keycloak from "@auth/sveltekit/providers/keycloak";
 import { env } from '$env/dynamic/public'
+import { PrismaAdapter } from '@auth/prisma-adapter'
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+const { PrismaClient } = require('@prisma/client');
 
 const authjsSecret = env.PUBLIC_AUTH_SECRET; // Use Environment Variables AUTH_SECRET in prod
 
@@ -9,13 +13,15 @@ const kcConfig = {
   clientId: env.PUBLIC_AUTH_KEYCLOAK_ID, // Paste "Client id" here. Use Environment Variables AUTH_KEYCLOAK_ID in prod
   clientSecret: env.PUBLIC_AUTH_KEYCLOAK_SECRET, // Paste "Client secret" here. Use Environment Variables AUTH_KEYCLOAK_ISSUER in prod
 };
+const db = new PrismaClient()
 
-export const { handle, signIn, signOut } = SvelteKitAuth({
+const { handle: handle, signIn, signOut } = SvelteKitAuth({
   trustHost: true,
+  adapter: PrismaAdapter(db),
   secret: authjsSecret,
   providers: [Keycloak(kcConfig)],
   callbacks: {
-    jwt({ user, token, account, profile }) {
+    async jwt({ user, token, account, profile }) {
       if (user) {
         // User is available during sign-in
         token.id = user.id;
@@ -33,10 +39,16 @@ export const { handle, signIn, signOut } = SvelteKitAuth({
 
       return token;
     },
-    session({ session, token }) {
+    async session({ session, token }) {
       // session.user.id = token.id;
       session.user = { ...token };
       return session;
     },
   },
 });
+
+export {
+  handle,
+  signIn, 
+  signOut
+}
