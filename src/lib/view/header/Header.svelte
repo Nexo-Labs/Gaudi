@@ -1,15 +1,15 @@
 <script lang="ts">
 	import '../tailwind.css';
 	import Logo from './Logo.svelte';
-	import NavButton from 'lib/common/NavButton.svelte';
+	import NavButton from '$lib/view/common/NavButton.svelte';
 	import NavItem from './NavItem.svelte';
 	import HamburgerMenu from './HamburgerMenu.svelte';
 	import LoginButton from './login_button.svelte';
-	import type { SessionModel } from '$src/domain/user-model.js';
 	import LogoutButton from './logout_button.svelte';
+	import type { Session } from '@auth/sveltekit';
 
 	let isMenuOpen = false;
-	export let session: SessionModel | undefined;
+	export let session: Session | null | undefined;
 
 	function toggleMenu() {
 		isMenuOpen = !isMenuOpen;

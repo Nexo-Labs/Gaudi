@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Header from 'lib/header/Header.svelte';
+	import Header from '$lib/view/header/Header.svelte';
 	import type { LayoutServerData } from "./$types.js";
 
 	export let data: LayoutServerData;

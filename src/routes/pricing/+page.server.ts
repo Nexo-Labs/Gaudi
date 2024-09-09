@@ -1,4 +1,4 @@
-import { stripe } from "$lib/server/stripe.js"
+import { stripe } from "$src/lib/server/stripe.js"
 import type { PageServerLoad } from './$types.js';
 
 

@@ -1,6 +1,6 @@
 <script>
-	import ContentWrapper from '$lib/common/ContentWrapper.svelte';
-	import TiptapEditor from "$lib/common/TiptapEditor.svelte";
+	import ContentWrapper from '$lib/view/common/ContentWrapper.svelte';
+	import TiptapEditor from "$lib/view/common/TiptapEditor.svelte";
 </script>
 
 <svelte:head>

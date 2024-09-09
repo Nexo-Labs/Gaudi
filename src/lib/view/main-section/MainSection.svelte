@@ -1,8 +1,8 @@
 <script lang="ts">
   	import '../tailwind.css';
 
-	import NavButton from 'lib/common/NavButton.svelte';
-	import ContentWrapper from 'lib/common/ContentWrapper.svelte';
+	import NavButton from '$lib/view/common/NavButton.svelte';
+	import ContentWrapper from '$lib/view/common/ContentWrapper.svelte';
 	import escohotadoFumandoImg from '../assets/img/escohotado-fumando.png';
 
 </script>

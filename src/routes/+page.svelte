@@ -1,12 +1,8 @@
 <script lang="ts">
-	import MainSection from "lib/main-section/MainSection.svelte";
+	import MainSection from "$lib/view/main-section/MainSection.svelte";
 	import type { LayoutServerData } from "./$types.js";
-	import { flatMap } from "$src/domain/common/Optional.js";
-	import { mapSessionToUserModel } from "$src/domain/user-model.js";
 
 	export let data: LayoutServerData;
-
-	let userModel = flatMap(data?.session, session => mapSessionToUserModel(session))
 
 </script>
 
