@@ -6,10 +6,11 @@
 	import HamburgerMenu from './HamburgerMenu.svelte';
 	import LoginButton from './login_button.svelte';
 	import LogoutButton from './logout_button.svelte';
-	import type { Session } from '@auth/sveltekit';
+	import type { UserModel } from '$src/lib/domain/user-model.js';
+	import type { Optional } from '$src/lib/domain/common/Optional.js';
 
 	let isMenuOpen = false;
-	export let session: Session | null | undefined;
+	export let user: Optional<UserModel>;
 
 	function toggleMenu() {
 		isMenuOpen = !isMenuOpen;
@@ -29,7 +30,7 @@
 			<NavItem href="/eventos" text="Eventos" />
 			<div class="h-8 justify-start items-center gap-2.5 inline-flex">
 				<NavButton href="https://laemboscadura.com/" text="La emboscadura" variant="primary" />
-				{#if session?.user}
+				{#if user}
 				<LogoutButton />
 				{:else}
 				<LoginButton />

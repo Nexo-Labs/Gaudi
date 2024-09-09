@@ -7,7 +7,7 @@
 </script>
 
 <div class="app">
-	<Header session={data.session} />
+	<Header user={data.user} />
 	<main>
 		<slot />
 	</main>
