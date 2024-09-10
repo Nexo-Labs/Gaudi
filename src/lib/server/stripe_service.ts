@@ -8,7 +8,7 @@ export const stripe = new Stripe(env.STRIPE_SECRET_KEY, {
   apiVersion: '2024-06-20'
 })
 
-async function getPrices(): Promise<Stripe.Price[]> {
+async function getPricesWithProduct(): Promise<Stripe.Price[]> {
   return (await stripe.prices.list({
     expand: ['data.product']
   })).data
@@ -18,9 +18,20 @@ type ProductWithPrices = Stripe.Product & {
   prices: Stripe.Price[];
 };
 
+export async function getSubscriptionsByUser(user: UserModel): Promise<string[]> {
+  const result = await stripe.customers.list({email: user.email})
+  const customer = result.data.length ? result.data[0] : null
+  if (!customer) return []
+
+  return (await stripe.subscriptions.list({ customer: customer.id }))
+    .data
+    .flatMap(subscription => subscription.items.data)
+    .map(item => item.price.id)
+}
+
 export async function getProductWithPrices(): Promise<ProductWithPrices[]> {
 
-  const prices = await getPrices();
+  const prices = await getPricesWithProduct();
   const productsMap: Record<string, ProductWithPrices> = {};
 
   prices.forEach((price) => {
@@ -72,20 +83,30 @@ export async function getPrice(priceId: string): Promise<Optional<Stripe.Price>>
   return data.length ? data[0] : null
 }
 
-export async function createSubscription(user: UserModel, price: Stripe.Price) {
-  const customer = await stripe.customers.create({
+async function getCustomer(user: UserModel): Promise<Stripe.Customer> {
+  const result = await stripe.customers.list({
+    email: user.email
+  })
+  const customer = result.data.length ? result.data[0] : null
+  if (customer) return customer
+
+  return await stripe.customers.create({
     name: user.name,
     email: user.email,
     metadata: {
-      userId: user.idToken.sub
+      user_id: user.idToken.sub
     }
   })
+}
+
+export async function createSubscription(user: UserModel, price: Stripe.Price) {
+  const customer = await getCustomer(user)
 
   const subscription = await stripe.subscriptions.create({
     customer: customer.id,
     items: [{ price: price.id }],
     metadata: {
-      userId: user.idToken.sub
+      user_id: user.idToken.sub
     }
   })
 
@@ -95,21 +116,21 @@ export async function createSubscription(user: UserModel, price: Stripe.Price) {
 export async function createCheckout(url: URL, user: UserModel, price: Stripe.Price, quantity = 1): Promise<Stripe.Checkout.Session> {
 
   const subscription_data = {
-    metadata: { userId: user.idToken.sub }
+    metadata: { user_id: user.idToken.sub }
   }
 
   const recurring = price.type == 'recurring'
 
   return await stripe.checkout.sessions.create({
-      success_url: `${url.origin}${relativeUrls.subscriptions.checkoutComplete}`,
-      cancel_url: `${url.origin}${relativeUrls.subscriptions.checkoutCancel}`,
+      success_url: `${url.origin}${relativeUrls.subscriptions.list}`,
+      cancel_url: `${url.origin}${relativeUrls.subscriptions.list}`,
       mode: recurring ? 'subscription' : 'payment',
       customer_email: user.email,
       client_reference_id: user.idToken.sub,
       metadata: {
-        userId: user.idToken.sub,
-        priceId: price.id,
-        lookupKey: price.lookup_key   
+        user_id: user.idToken.sub,
+        price_id: price.id,
+        lookup_key: price.lookup_key   
       },
       line_items: [{price: price.id, quantity}],
       ...(recurring ? { subscription_data } : {})
@@ -119,7 +140,7 @@ export async function createCheckout(url: URL, user: UserModel, price: Stripe.Pr
 
 
 
-export async function createPortalSession(user: UserModel) {
+export async function createPortalSession(url: URL, user: UserModel) {
   const customers = await stripe.customers.list({
     email: user.email,
   });
@@ -129,9 +150,9 @@ export async function createPortalSession(user: UserModel) {
     throw new Error(`No customer found with email: ${user.email}`);
   }
 
-  return stripe.billingPortal.sessions.create({
+  return await stripe.billingPortal.sessions.create({
     customer: customer.id,
-    return_url: toAbsoluteUrl(relativeUrls.subscriptions.list)
+    return_url: `${url.origin}${relativeUrls.subscriptions.list}`
   })
 }
 

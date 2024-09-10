@@ -47,12 +47,16 @@ export const { handle, signIn, signOut } = SvelteKitAuth({
 });
 
 export async function getUser(locals: App.Locals): Promise<Optional<UserModel>> {
-  const session = await locals.auth();
-  if (!session) return redirect(303, "/");
 
-  const user = flatMap(session, (session) => mapSessionToUserModel(session));
-  return user;
+  return flatMap(await locals.auth(), 
+    (session) => mapSessionToUserModel(session)
+  );
 }
 
 
 
+export async function restrictAuth(locals: App.Locals): Promise<UserModel> {
+  const user = await getUser(locals)
+  if (!user) return redirect(303, "/")
+  return user
+}

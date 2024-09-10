@@ -3,7 +3,7 @@
 	import NavButton from "$src/lib/view/common/NavButton.svelte";
 	import type { PageData } from "./$types.js";
 
-
+	
 	export let data: PageData;
 </script>
 
@@ -16,14 +16,14 @@
 			<h2>{price.recurring?.interval}</h2>
 			<p>
 				Price: {((price.unit_amount || 0) / 100).toLocaleString(
-					'es-ES', {
-						style: 'currency',
-						currency: 'eur'
-					}
+					'es-ES', 
+					{ style: 'currency', currency: 'eur' }
 				)}
 			</p>
 
-			{#if price.type == 'recurring'}
+			{#if data.activePrices.includes(price.id) }
+				<p>Contratado</p>
+			{:else if price.type == 'recurring'}
 				<NavButton text="Subscribe" href={relativeUrls.subscriptions.checkout(price.id)}/>
 				{:else}
 				<NavButton text="Buy now" href="/subscriptions/checkout?priceId={price.id}"/>

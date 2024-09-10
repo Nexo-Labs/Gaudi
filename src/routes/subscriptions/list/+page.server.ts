@@ -1,9 +1,15 @@
-import { getProductWithPrices } from "$src/lib/server/stripe_service.js"
+import { getUser } from "$src/lib/server/auth.service.js";
+import { getProductWithPrices, getSubscriptionsByUser } from "$src/lib/server/stripe_service.js"
+import { redirect } from "@sveltejs/kit";
 import type { PageServerLoad } from './$types.js';
-import Stripe from 'stripe'
 
-export const load : PageServerLoad = async () => {
+export const load : PageServerLoad = async ({locals}) => {
+  const user = await getUser(locals)
+  if(!user) return redirect(303, "/")
+  const activePrices = await getSubscriptionsByUser(user)
+
   return {
+    activePrices,
     products: await getProductWithPrices()
   };
 }
