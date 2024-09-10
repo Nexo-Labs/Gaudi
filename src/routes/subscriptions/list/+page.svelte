@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { relativeUrls } from "$src/lib/domain/routing.js";
+	import NavButton from "$src/lib/view/common/NavButton.svelte";
 	import type { PageData } from "./$types.js";
 
 
@@ -21,16 +23,11 @@
 				)}
 			</p>
 
-      {#if price.type == 'recurring'}
-        <a href="/suscriptions/checkout?priceId={price.id}">
-          Subscribe
-        </a>
-
-        {:else}
-        <a href="/suscriptions/checkout?priceId={price.id}">
-          Buy now
-        </a>
-      {/if}
+			{#if price.type == 'recurring'}
+				<NavButton text="Subscribe" href={relativeUrls.subscriptions.checkout(price.id)}/>
+				{:else}
+				<NavButton text="Buy now" href="/subscriptions/checkout?priceId={price.id}"/>
+			{/if}
 
 		</section>
 		<br/>

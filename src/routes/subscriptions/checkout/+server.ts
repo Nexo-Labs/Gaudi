@@ -1,7 +1,7 @@
 import { error, redirect } from '@sveltejs/kit';
 import { getUser } from '$src/lib/server/auth.service.js';
 import { createSubscription, getPrice, createCheckout } from '$src/lib/server/stripe_service.js';
-import { relativeUrls } from '$src/lib/server/routing.js';
+import { relativeUrls } from '$src/lib/domain/routing.js';
 
 const expiredStates = [ 'INCOMPLETE_EXPIRED', 'CANCELED' ]
 

@@ -2,7 +2,7 @@ import Stripe from 'stripe'
 import { env } from '$env/dynamic/private'
 import type { Optional } from '../domain/common/Optional.js'
 import type { UserModel } from '../domain/user-model.js'
-import { relativeUrls, toAbsoluteUrl } from './routing.js'
+import { relativeUrls } from '../domain/routing.js'
 
 export const stripe = new Stripe(env.STRIPE_SECRET_KEY, {
   apiVersion: '2024-06-20'
@@ -139,5 +139,10 @@ async function syncSuscriptionData(user: UserModel) {
   //TODO Sync data with keycloak and the cache of the svelte server
 }
 
+
+
+export function toAbsoluteUrl(path: string | URL) {
+  return new URL(path, env.DOMAIN).toString()
+}
 
 
