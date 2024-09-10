@@ -2,6 +2,7 @@ import Stripe from 'stripe'
 import { env } from '$env/dynamic/private'
 import type { Optional } from '../domain/common/Optional.js'
 import type { UserModel } from '../domain/user-model.js'
+import { relativeUrls, toAbsoluteUrl } from './routing.js'
 
 export const stripe = new Stripe(env.STRIPE_SECRET_KEY, {
   apiVersion: '2024-06-20'
@@ -65,18 +66,29 @@ export async function createSubscription(user: UserModel, price: Stripe.Price) {
   await syncSuscriptionData(user)
 }
 
-export async function createCheckout(user: UserModel, price: Stripe.Price) {
-  const customer = await stripe.customers.create({
-    name: user.name,
-    email: user.email,
-  })
+export async function createCheckout(url: URL, user: UserModel, price: Stripe.Price, quantity = 1): Promise<Stripe.Checkout.Session> {
 
-  const subscription = await stripe.subscriptions.create({
-    customer: customer.id,
-    items: [{ price: price.id }]
-  })
+  const subscription_data = {
+    metadata: { userId: user.idToken.sub }
+  }
 
-  await syncSuscriptionData(user)
+  const recurring = price.type == 'recurring'
+
+  return await stripe.checkout.sessions.create({
+      success_url: `${url.origin}${relativeUrls.subscriptions.checkoutComplete}`,
+      cancel_url: `${url.origin}${relativeUrls.subscriptions.checkoutCancel}`,
+      mode: recurring ? 'subscription' : 'payment',
+      customer_email: user.email,
+      client_reference_id: user.idToken.sub,
+      metadata: {
+        userId: user.idToken.sub,
+        priceId: price.id,
+        lookupKey: price.lookup_key   
+      },
+      line_items: [{price: price.id, quantity}],
+      ...(recurring ? { subscription_data } : {})
+    }
+  )
 }
 
 
@@ -93,7 +105,7 @@ export async function createPortalSession(user: UserModel) {
 
   return stripe.billingPortal.sessions.create({
     customer: customer.id,
-    return_url: absoluteURL("/suscriptions/list")
+    return_url: toAbsoluteUrl(relativeUrls.subscriptions.list)
   })
 }
 
@@ -103,6 +115,3 @@ async function syncSuscriptionData(user: UserModel) {
 
 
 
-function absoluteURL(path: string | URL) {
-  return new URL(path, env.DOMAIN).toString()
-}

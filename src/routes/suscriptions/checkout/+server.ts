@@ -1,6 +1,7 @@
-import { error, json, redirect } from '@sveltejs/kit';
+import { error, redirect } from '@sveltejs/kit';
 import { getUser } from '$src/lib/server/auth.service.js';
-import { createSubscription, getPrice, getPriceByProductId } from '$src/lib/server/stripe_service.js';
+import { createSubscription, getPrice, createCheckout } from '$src/lib/server/stripe_service.js';
+import { relativeUrls } from '$src/lib/server/routing.js';
 
 const expiredStates = [ 'INCOMPLETE_EXPIRED', 'CANCELED' ]
 
@@ -17,8 +18,10 @@ export const GET = async ({locals, url}) => {
     if (price.type == 'recurring' && price.unit_amount == 0) {
         await createSubscription(user, price)
     
-        return redirect(303, "/suscriptions/list")
+        return redirect(303, relativeUrls.subscriptions.list)
     } else {
-        throw error(406, 'Non susbcribing products not supported yet');
-    }    
+        const checkoutResult = await createCheckout(url, user, price)
+        if(checkoutResult.url) return redirect(303, checkoutResult.url)
+        else throw error(406, 'Create checkout url failed');
+    }
 };
