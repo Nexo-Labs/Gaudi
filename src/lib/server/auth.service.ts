@@ -1,6 +1,9 @@
 import { SvelteKitAuth } from "@auth/sveltekit";
 import Keycloak from "@auth/sveltekit/providers/keycloak";
 import { env } from '$env/dynamic/public'
+import { redirect } from "@sveltejs/kit";
+import { flatMap, type Optional } from "../domain/common/Optional.js";
+import { type UserModel, mapSessionToUserModel } from "../domain/user-model.js";
 
 const authjsSecret = env.PUBLIC_AUTH_SECRET;
 
@@ -10,14 +13,14 @@ const kcConfig = {
   clientSecret: env.PUBLIC_AUTH_KEYCLOAK_SECRET,
 };
 
-const { handle: handle, signIn, signOut } = SvelteKitAuth({
+export const { handle, signIn, signOut } = SvelteKitAuth({
   trustHost: true,
   secret: authjsSecret,
   providers: [
     Keycloak(kcConfig)
   ],
   callbacks: {
-    async jwt({ user, token, account, profile }) {
+    async jwt({ user, token, account, profile }: any) {
       if (user) {
         token.id = user.id;
       }
@@ -34,7 +37,7 @@ const { handle: handle, signIn, signOut } = SvelteKitAuth({
 
       return token;
     },
-    async session({ session, token }) {
+    async session({ session, token }: any) {
       // session.user.id = token.id;
       session.user = { ...token };
 
@@ -43,8 +46,13 @@ const { handle: handle, signIn, signOut } = SvelteKitAuth({
   },
 });
 
-export {
-  handle,
-  signIn, 
-  signOut
+export async function getUser(locals: App.Locals): Promise<Optional<UserModel>> {
+  const session = await locals.auth();
+  if (!session) return redirect(303, "/");
+
+  const user = flatMap(session, (session) => mapSessionToUserModel(session));
+  return user;
 }
+
+
+
