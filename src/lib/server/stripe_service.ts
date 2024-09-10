@@ -8,11 +8,37 @@ export const stripe = new Stripe(env.STRIPE_SECRET_KEY, {
   apiVersion: '2024-06-20'
 })
 
-export async function getProducts(): Promise<Stripe.Product[]> {
-    return (await stripe.products.list({
-      active: true,
-      expand: ['data.default_price']
-    })).data
+async function getPrices(): Promise<Stripe.Price[]> {
+  return (await stripe.prices.list({
+    expand: ['data.product']
+  })).data
+}
+
+type ProductWithPrices = Stripe.Product & {
+  prices: Stripe.Price[];
+};
+
+export async function getProductWithPrices(): Promise<ProductWithPrices[]> {
+
+  const prices = await getPrices();
+  const productsMap: Record<string, ProductWithPrices> = {};
+
+  prices.forEach((price) => {
+    const product = price.product as Stripe.Product;
+    if (!product.active) return
+    if (!productsMap[product.id]) {
+      productsMap[product.id] = {
+        ...product,
+        prices: []
+      };
+    }
+
+    productsMap[product.id].prices.push(price);
+  });
+
+
+  return Object.values(productsMap);
+
 }
 
 export async function getPriceByProductId(productId: string): Promise<Optional<Stripe.Price>> {

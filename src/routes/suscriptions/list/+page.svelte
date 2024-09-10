@@ -8,29 +8,32 @@
 <h1>Pricing</h1>
 
 {#each data.products as product}
-	{#if product.default_price && typeof product.default_price == 'object'}
+	{#each product.prices as price }
 		<section>
 			<h2>{product.name}</h2>
-
+			<h2>{price.recurring?.interval}</h2>
 			<p>
-				Price: {((product.default_price.unit_amount || 0) / 100).toLocaleString('es-ES', {
-					style: 'currency',
-					currency: 'eur'
-				})}
+				Price: {((price.unit_amount || 0) / 100).toLocaleString(
+					'es-ES', {
+						style: 'currency',
+						currency: 'eur'
+					}
+				)}
 			</p>
 
-      {#if product.default_price.type == 'recurring'}
-        <a href="/suscriptions/checkout?priceId={product.default_price.id}">
+      {#if price.type == 'recurring'}
+        <a href="/suscriptions/checkout?priceId={price.id}">
           Subscribe
         </a>
 
         {:else}
-        <a href="/suscriptions/checkout?priceId={product.default_price.id}">
+        <a href="/suscriptions/checkout?priceId={price.id}">
           Buy now
         </a>
       {/if}
 
 		</section>
-	{/if}
-  <br/>
+		<br/>
+		{/each}
+	<br/>
 {/each}
