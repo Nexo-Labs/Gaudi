@@ -1,12 +1,17 @@
 import { jwtDecode } from 'jwt-decode';
 import type { Session } from '@auth/sveltekit';
+import type { UserAuthJS } from '../server/auth.service.js';
 
 export interface UserModel {
+	userId: string;
+	tokenId: string;
+	username: string;
 	name: string;
+	givenName: string;
+	familyName: string;
 	email: string;
 	accessToken: AccessToken;
 	refreshToken: RefreshToken;
-	idToken: IdToken;
 }
 
 interface AccessToken {
@@ -53,43 +58,21 @@ interface RefreshToken {
 	scope: string;
 }
 
-interface IdToken {
-	exp: number;
-	iat: number;
-	auth_time: number;
-	jti: string;
-	iss: string;
-	aud: string;
-	sub: string;
-	typ: string;
-	azp: string;
-	sid: string;
-	at_hash: string;
-	acr: string;
-	email_verified: boolean;
-	name: string;
-	preferred_username: string;
-	given_name: string;
-	locale: string;
-	family_name: string;
-	email: string;
-}
-
 export function mapSessionToUserModel(session: Session): UserModel | undefined {
-	const user = session.user as any;
-	const name = user?.name;
-	const email = user?.email;
-	if (user == null || name == null || email == null) return undefined;
+	const user = session.user as UserAuthJS;
 
-	const accessToken = jwtDecode<AccessToken>(user.accessToken);
-	const refreshToken = jwtDecode<RefreshToken>(user.refreshToken);
-	const idToken = jwtDecode<IdToken>(user.idToken);
+	const accessToken = jwtDecode<AccessToken>(user.access_token);
+	const refreshToken = jwtDecode<RefreshToken>(user.refresh_token);
 
 	return {
-		name,
-		email,
+		userId: user.sub,
+		tokenId: user.jti,
+		name: user.name,
+		username: user.preferred_username,
+		email: user.email,
+		givenName: user.given_name,
+		familyName: user.family_name,
 		accessToken,
 		refreshToken,
-		idToken
 	};
 }

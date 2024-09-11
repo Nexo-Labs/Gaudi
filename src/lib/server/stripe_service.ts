@@ -118,7 +118,7 @@ async function getCustomer(user: UserModel): Promise<Stripe.Customer> {
 		name: user.name,
 		email: user.email,
 		metadata: {
-			user_id: user.idToken.sub
+			user_id: user.userId
 		}
 	});
 }
@@ -139,7 +139,7 @@ export async function createCheckout(
 	quantity = 1
 ): Promise<Stripe.Checkout.Session> {
 	const subscription_data = {
-		metadata: { user_id: user.idToken.sub }
+		metadata: { user_id: user.userId }
 	};
 
 	const recurring = price.type == 'recurring';
@@ -149,9 +149,9 @@ export async function createCheckout(
 		cancel_url: `${url.origin}${relativeUrls.subscriptions.list}`,
 		mode: recurring ? 'subscription' : 'payment',
 		customer_email: user.email,
-		client_reference_id: user.idToken.sub,
+		client_reference_id: user.userId,
 		metadata: {
-			user_id: user.idToken.sub,
+			user_id: user.userId,
 			price_id: price.id,
 			lookup_key: price.lookup_key
 		},
