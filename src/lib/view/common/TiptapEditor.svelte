@@ -1,17 +1,17 @@
 <script lang="ts">
 	import { onMount, onDestroy } from 'svelte';
-	import { Editor  } from '@tiptap/core';
+	import { Editor } from '@tiptap/core';
 	import StarterKit from '@tiptap/starter-kit';
-	import Image from '@tiptap/extension-image'
-	import Youtube from '@tiptap/extension-youtube'
+	import Image from '@tiptap/extension-image';
+	import Youtube from '@tiptap/extension-youtube';
 
-	import TextAlign from '@tiptap/extension-text-align'
-	import Typography from '@tiptap/extension-typography'
-	import HorizontalRule from '@tiptap/extension-horizontal-rule'
-	import CodeBlock from '@tiptap/extension-code-block'
-	import Blockquote from '@tiptap/extension-blockquote'
-	import TextStyle from '@tiptap/extension-text-style'
-	import FontFamily from '@tiptap/extension-font-family'
+	import TextAlign from '@tiptap/extension-text-align';
+	import Typography from '@tiptap/extension-typography';
+	import HorizontalRule from '@tiptap/extension-horizontal-rule';
+	import CodeBlock from '@tiptap/extension-code-block';
+	import Blockquote from '@tiptap/extension-blockquote';
+	import TextStyle from '@tiptap/extension-text-style';
+	import FontFamily from '@tiptap/extension-font-family';
 	import { ColumnsExtension } from '@tiptap-extend/columns';
 
 	let element: any;
@@ -36,8 +36,8 @@
 			],
 			editorProps: {
 				attributes: {
-				class: 'prose prose-sm sm:prose-base lg:prose-lg xl:prose-2xl m-5 focus:outline-none',
-				},
+					class: 'prose prose-sm sm:prose-base lg:prose-lg xl:prose-2xl m-5 focus:outline-none'
+				}
 			},
 			content: `
     <h2>
@@ -71,7 +71,7 @@
   `,
 			onTransaction: () => {
 				editor = editor;
-			},
+			}
 		});
 	});
 
@@ -130,5 +130,4 @@
 		border: 1px gray dashed;
 		border-radius: 8px;
 	}
-
 </style>

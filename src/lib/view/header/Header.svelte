@@ -31,11 +31,10 @@
 			<div class="h-8 justify-start items-center gap-2.5 inline-flex">
 				<NavButton href="https://laemboscadura.com/" text="La emboscadura" variant="primary" />
 				{#if user}
-				<LogoutButton />
+					<LogoutButton />
 				{:else}
-				<LoginButton />
+					<LoginButton />
 				{/if}
-
 			</div>
 		</div>
 	</nav>

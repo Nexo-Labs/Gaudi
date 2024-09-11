@@ -3,7 +3,7 @@
 	export let variant: 'primary' | 'secondary' = 'primary';
 	export let noBreak: boolean = false;
 	export let fitContent: boolean = true;
-	export let onClick: (() => void); // Nueva propiedad closure
+	export let onClick: () => void; // Nueva propiedad closure
 </script>
 
 <button
@@ -17,9 +17,9 @@
 	class:leading-3={!noBreak}
 	class:inline-flex={fitContent}
 	class:w-full={!fitContent}
-	on:click={(() => {
-			onClick();
-        })}
+	on:click={() => {
+		onClick();
+	}}
 >
 	{text}
 </button>

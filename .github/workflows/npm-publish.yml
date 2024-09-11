@@ -5,7 +5,6 @@ on:
     tags:
       - 'v*'
 
-
 jobs:
   publish:
     runs-on: ubuntu-latest
@@ -14,26 +13,26 @@ jobs:
       packages: write
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: '20'
-        registry-url: 'https://npm.pkg.github.com/'
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20'
+          registry-url: 'https://npm.pkg.github.com/'
 
-    - name: Configure .npmrc
-      run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" > ~/.npmrc
+      - name: Configure .npmrc
+        run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" > ~/.npmrc
 
-    - name: Install dependencies
-      run: yarn install
+      - name: Install dependencies
+        run: yarn install
 
-    - name: Build package
-      run: yarn build
+      - name: Build package
+        run: yarn build
 
-    - name: Publish package
-      run: yarn publish --non-interactive
-      continue-on-error: true
-      env:
-        NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Publish package
+        run: yarn publish --non-interactive
+        continue-on-error: true
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
