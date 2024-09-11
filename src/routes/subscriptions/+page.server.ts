@@ -6,10 +6,10 @@ import type { PageServerLoad } from './$types.js';
 export const load : PageServerLoad = async ({locals}) => {
   const user = await getUser(locals)
   if(!user) return redirect(303, "/")
-  const activePrices = await getSubscriptionsByUser(user)
+  const currentSubscriptions = await getSubscriptionsByUser(user)
 
   return {
-    activePrices,
+    currentSubscriptions,
     products: await getProductWithPrices()
   };
 }

@@ -18,15 +18,41 @@ type ProductWithPrices = Stripe.Product & {
   prices: Stripe.Price[];
 };
 
-export async function getSubscriptionsByUser(user: UserModel): Promise<string[]> {
+type SubscriptionCanceled = {
+  isCanceled: boolean,
+  cancelAt: number | null,
+}
+
+type UserSubscription = {
+  priceId: string, 
+  subscriptionId: string, 
+  productId: string,
+  canceled?: SubscriptionCanceled
+}
+
+export async function getSubscriptionsByUser(user: UserModel): Promise<UserSubscription[]> {
   const result = await stripe.customers.list({email: user.email})
   const customer = result.data.length ? result.data[0] : null
   if (!customer) return []
 
+  let subscriptionCanceled: SubscriptionCanceled | undefined;
   return (await stripe.subscriptions.list({ customer: customer.id }))
     .data
-    .flatMap(subscription => subscription.items.data)
-    .map(item => item.price.id)
+    .flatMap(subscription => {
+      subscriptionCanceled = {
+        isCanceled: subscription.cancel_at_period_end,
+        cancelAt: subscription.cancel_at,
+      }
+      return subscription. items.data
+    })
+    .map(item => {
+       return { 
+        canceled: subscriptionCanceled,
+        priceId: item.price.id, 
+        productId: item.price.product as string, 
+        subscriptionId: item.subscription,
+      }}
+    )
 }
 
 export async function getProductWithPrices(): Promise<ProductWithPrices[]> {
@@ -99,18 +125,10 @@ async function getCustomer(user: UserModel): Promise<Stripe.Customer> {
   })
 }
 
-export async function createSubscription(user: UserModel, price: Stripe.Price) {
-  const customer = await getCustomer(user)
-
-  const subscription = await stripe.subscriptions.create({
-    customer: customer.id,
-    items: [{ price: price.id }],
-    metadata: {
-      user_id: user.idToken.sub
-    }
+export async function updateSubscription(suscriptionId: string, cancelAtPeriodEnd: boolean): Promise<Stripe.Subscription> {
+  return await stripe.subscriptions.update(suscriptionId, {
+    cancel_at_period_end: cancelAtPeriodEnd,
   })
-
-  await syncSuscriptionData(user)
 }
 
 export async function createCheckout(url: URL, user: UserModel, price: Stripe.Price, quantity = 1): Promise<Stripe.Checkout.Session> {
@@ -140,7 +158,7 @@ export async function createCheckout(url: URL, user: UserModel, price: Stripe.Pr
 
 
 
-export async function createPortalSession(url: URL, user: UserModel) {
+export async function createPortalSession(url: URL, user: UserModel, flowData?: Stripe.BillingPortal.SessionCreateParams.FlowData) {
   const customers = await stripe.customers.list({
     email: user.email,
   });
@@ -151,6 +169,7 @@ export async function createPortalSession(url: URL, user: UserModel) {
   }
 
   return await stripe.billingPortal.sessions.create({
+    flow_data: flowData,
     customer: customer.id,
     return_url: `${url.origin}${relativeUrls.subscriptions.list}`
   })
