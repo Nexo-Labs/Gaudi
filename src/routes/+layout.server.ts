@@ -1,8 +1,8 @@
-import type { LayoutServerLoad } from "./$types.js";
+import { getUser } from '$src/lib/server/auth.service.js';
+import type { LayoutServerLoad } from './$types.js';
 
 export const load: LayoutServerLoad = async (event) => {
-  const session = await event.locals.auth();
-  return {
-    session,
-  };
+	return {
+		user: await getUser(event.locals)
+	};
 };

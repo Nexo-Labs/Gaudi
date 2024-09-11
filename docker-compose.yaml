@@ -2,8 +2,32 @@ services:
   server:
     build:
       context: .
+      target: Deploy
     ports:
       - 3000:3000
     platform: linux/amd64
+    env_file:
+      - ./.env
     environment:
-      PUBLIC_AUTH_KEYCLOAK_ID: web
+      PUBLIC_AUTH_KEYCLOAK_ID: ${PUBLIC_AUTH_KEYCLOAK_ID}
+      PUBLIC_AUTH_KEYCLOAK_SECRET: ${PUBLIC_AUTH_KEYCLOAK_SECRET}
+      PUBLIC_AUTH_SECRET: ${PUBLIC_AUTH_SECRET}
+      PUBLIC_AUTH_KEYCLOAK_ISSUER: https://auth.nexolabs.xyz/realms/Escohotado
+
+      STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY}
+      STRIPE_WEBHOOK_SECRET: ${STRIPE_WEBHOOK_SECRET}
+      DOMAIN: localhost
+
+      DATABASE_URL: postgresql://admin:devsecret@escota_db:5432/escota_dev_deb?schema=public
+
+  postgres:
+    container_name: escota_db
+    image: postgres:14-alpine
+    ports:
+      - 5432:5432
+    volumes:
+      - ./volumes/postgres:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=devsecret
+      - POSTGRES_USER=admin
+      - POSTGRES_DB=escota_dev_deb
