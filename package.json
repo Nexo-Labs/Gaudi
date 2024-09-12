@@ -78,6 +78,7 @@
 		"postcss": "^8.4.38",
 		"prettier": "^3.1.1",
 		"prettier-plugin-svelte": "^3.1.2",
+		"prisma": "^5.19.1",
 		"publint": "^0.1.9",
 		"storybook": "^8.1.10",
 		"stripe": "^16.9.0",
@@ -88,8 +89,7 @@
 		"typescript": "^5.0.0",
 		"typescript-eslint": "^8.0.0-alpha.20",
 		"vite": "^5.0.11",
-		"vitest": "^1.2.0",
-		"prisma": "^5.19.1"
+		"vitest": "^1.2.0"
 	},
 	"svelte": "./dist/index.js",
 	"types": "./dist/index.d.ts",
@@ -100,6 +100,7 @@
 		]
 	},
 	"dependencies": {
-		"@sentry/sveltekit": "^8.28.0"
+		"@sentry/sveltekit": "^8.28.0",
+		"@storybook/addon-viewport": "^8.3.0"
 	}
 }

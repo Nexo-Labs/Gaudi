@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/svelte';
-import NavButton from 'lib/common/NavButton.svelte';
+import NavButton from '$lib/view/common/NavButton.svelte';
 
 const meta = {
 	title: 'Escohotado/Atoms/NavButton',

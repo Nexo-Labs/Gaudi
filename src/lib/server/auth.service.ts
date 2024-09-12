@@ -54,10 +54,7 @@ export const { handle, signIn, signOut } = SvelteKitAuth({
 					...token
 				}
 			} else {
-				return loadProfileDataToToken(
-					await processRefreshToken(token), 
-					profile
-				);
+				return await processRefreshToken(token);
 			}
 		},
 		async session({ session, token }: any) {
