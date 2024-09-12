@@ -68,7 +68,6 @@ export const { handle, signIn, signOut } = SvelteKitAuth({
 function loadProfileDataToToken(token: any, profile: any) {
 	return {
 		...token,
-		profileId: profile.id,
 		preferred_username: profile.preferred_username,
 		given_name: profile.given_name,
 		family_name: profile.family_name,
