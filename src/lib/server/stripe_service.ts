@@ -115,7 +115,6 @@ async function getCustomer(user: UserModel): Promise<Stripe.Customer> {
 	if (customer) return customer;
 
 	return await stripe.customers.create({
-		name: user.name,
 		email: user.email,
 		metadata: {
 			user_id: user.userId
