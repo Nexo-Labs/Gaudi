@@ -1,5 +1,5 @@
 import { getUser, restrictAuth } from '$src/lib/server/auth.service.js';
-import { createPortalSession } from '$src/lib/server/stripe_service.js';
+import { createPortalSession } from '$src/lib/server/stripe/create_portal_session.js';
 import { redirect } from '@sveltejs/kit';
 import type Stripe from 'stripe';
 

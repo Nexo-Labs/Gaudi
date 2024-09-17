@@ -1,6 +1,7 @@
 import { error, redirect } from '@sveltejs/kit';
 import { restrictAuth } from '$src/lib/server/auth.service.js';
-import { getPrice, createCheckout } from '$src/lib/server/stripe_service.js';
+import { getPrice } from '$src/lib/server/stripe/get_price.js';
+import { createCheckout } from '$src/lib/server/stripe/create_checkout.js';
 
 const expiredStates = ['INCOMPLETE_EXPIRED', 'CANCELED'];
 
