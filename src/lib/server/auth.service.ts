@@ -6,6 +6,8 @@ import { flatMap, type Optional } from '../domain/common/Optional.js';
 import { type UserModel, mapSessionToUserModel } from '../domain/user-model.js';
 import { externalUrl } from './routing.js';
 import { getUserInfo, processRefreshToken } from './keycloak.service.js';
+import { PrismaClient } from "@prisma/client";
+import type { Adapter } from '@auth/core/adapters';
 
 const authjsSecret = env.PUBLIC_AUTH_SECRET;
 
@@ -17,10 +19,10 @@ const kcConfig = {
 
 export type UserAuthJS = {
 	sub: string;
-	family_name: string;
-	given_name: string;
+	family_name?: string;
+	given_name?: string;
+	preferred_username?: string;
 	name: string;
-	preferred_username: string;
 	access_token: string;
 	refresh_token: string;
 	expires_at: number;
@@ -31,47 +33,57 @@ export type UserAuthJS = {
 	roles: string[];
 };
 
+type Profile = {
+	preferred_username: string;
+	given_name: string;
+	family_name: string;
+};
+type Account = {
+	access_token: string;
+	expires_at: number;
+	refresh_token: string;
+};
+
+export const db = new PrismaClient();
+
 export const { handle, signIn, signOut } = SvelteKitAuth({
+	adapter: PrismaAdapter(db) as Adapter,
 	trustHost: true,
 	secret: authjsSecret,
 	providers: [Keycloak(kcConfig)],
 	callbacks: {
-		async jwt({ user, token, account, profile }: any): Promise<UserAuthJS> {
-			if (profile) {
-				token = loadProfileDataToToken(token, profile);
-			}
+		async jwt({ token, account, profile }: any): Promise<UserAuthJS> {
 			if (account) {
-				return {
-					...token,
-					access_token: account.access_token,
-					expires_at: account.expires_at,
-					refresh_token: account.refresh_token,
-				}
+				return processLoginCallback(token, account, profile);
 			} else if (Date.now() < token.expires_at * 1000) {
-				const roles = await getUserInfo(token.access_token, token.sub);
-				return {
-					roles,
-					...token
-				}
+				return token;
 			} else {
 				return await processRefreshToken(token);
 			}
 		},
 		async session({ session, token }: any) {
-			session.user = { ...token };
-			session.error = token.error
-			return session;
+			return {
+				...session,
+				error: token.error,
+				user: { 
+					...token, 
+					roles: await getUserInfo(token.access_token, token.sub)
+				}
+			};
 		}
 	}
 });
 
-function loadProfileDataToToken(token: any, profile: any) {
+function processLoginCallback(token: UserAuthJS, account: Account, profile?: Profile): UserAuthJS {
 	return {
 		...token,
-		preferred_username: profile.preferred_username,
-		given_name: profile.given_name,
-		family_name: profile.family_name,
-	};
+		access_token: account.access_token,
+		expires_at: account.expires_at,
+		refresh_token: account.refresh_token,
+		preferred_username: profile?.preferred_username,
+		given_name: profile?.given_name,
+		family_name: profile?.family_name,			
+};
 }
 
 export async function getUser(locals: App.Locals): Promise<Optional<UserModel>> {
@@ -83,3 +95,7 @@ export async function restrictAuth(locals: App.Locals): Promise<UserModel> {
 	if (!user) return redirect(303, '/');
 	return user;
 }
+function PrismaAdapter(db: PrismaClient<import("@prisma/client").Prisma.PrismaClientOptions, never, import("@prisma/client/runtime/library").DefaultArgs>): Adapter {
+	throw new Error('Function not implemented.');
+}
+

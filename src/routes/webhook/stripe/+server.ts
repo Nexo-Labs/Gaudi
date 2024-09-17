@@ -12,7 +12,7 @@ export const POST = async ({ request }) => {
 	try {
 		const event = stripe.webhooks.constructEvent(body, signature, whSecret);
 
-		if (event.type === 'checkout.session.completed') {
+		if (event.type === 'customer.subscription.updated') {
 			const sessionWithCustomer = await stripe.checkout.sessions.retrieve(event.data.object.id, {
 				expand: ['customer']
 			});

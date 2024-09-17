@@ -12,6 +12,7 @@ export interface UserModel {
 	email: string;
 	accessToken: AccessToken;
 	refreshToken: RefreshToken;
+	roles: string[];
 }
 
 interface AccessToken {
@@ -60,10 +61,9 @@ interface RefreshToken {
 
 export function mapSessionToUserModel(session: Session): UserModel | undefined {
 	const user = session.user as UserAuthJS;
-
-	const accessToken = jwtDecode<AccessToken>(user.access_token);
-	const refreshToken = jwtDecode<RefreshToken>(user.refresh_token);
-
+	
+	if(!user.preferred_username || !user.given_name || !user.family_name) return undefined;
+	
 	return {
 		userId: user.sub,
 		tokenId: user.jti,
@@ -72,7 +72,8 @@ export function mapSessionToUserModel(session: Session): UserModel | undefined {
 		email: user.email,
 		givenName: user.given_name,
 		familyName: user.family_name,
-		accessToken,
-		refreshToken,
+		roles: user.roles,
+		accessToken: jwtDecode<AccessToken>(user.access_token),
+		refreshToken: jwtDecode<RefreshToken>(user.refresh_token),
 	};
 }

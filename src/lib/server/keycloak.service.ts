@@ -16,7 +16,11 @@ export async function getUserInfo(accessToken: string, userId: string): Promise<
    }
 
    const userInfo = await response.json();
-   return userInfo.resource_access.web.roles;
+   return [
+      ...userInfo.resource_access.web.roles,
+      ...userInfo.resource_access.account.roles, 
+      ...userInfo.realm_access.roles
+   ];
 }
 
 type Token = { refresh_token?: string, access_token: string, expires_at: number }
