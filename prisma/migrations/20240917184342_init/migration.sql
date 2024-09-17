@@ -36,6 +36,13 @@ CREATE TABLE "User" (
     "email" TEXT,
     "emailVerified" TIMESTAMP(3),
     "image" TEXT,
+    "roles" TEXT[],
+    "customerId" TEXT,
+    "subscriptionId" TEXT,
+    "subscriptionStatus" "SubscriptionStatus",
+    "plan" TEXT,
+    "priceId" TEXT,
+    "purchases" JSONB NOT NULL DEFAULT '[]',
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
@@ -45,19 +52,6 @@ CREATE TABLE "VerificationToken" (
     "identifier" TEXT NOT NULL,
     "token" TEXT NOT NULL,
     "expires" TIMESTAMP(3) NOT NULL
-);
-
--- CreateTable
-CREATE TABLE "StripeCustomer" (
-    "_id" TEXT NOT NULL,
-    "subscriptionId" TEXT NOT NULL,
-    "subscriptionStatus" "SubscriptionStatus" NOT NULL,
-    "plan" TEXT NOT NULL,
-    "priceId" TEXT NOT NULL,
-    "purchases" JSONB NOT NULL DEFAULT '[]',
-    "userId" TEXT NOT NULL,
-
-    CONSTRAINT "StripeCustomer_pkey" PRIMARY KEY ("_id")
 );
 
 -- CreateIndex
@@ -80,6 +74,3 @@ ALTER TABLE "Account" ADD CONSTRAINT "Account_userId_fkey" FOREIGN KEY ("userId"
 
 -- AddForeignKey
 ALTER TABLE "Session" ADD CONSTRAINT "Session_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "StripeCustomer" ADD CONSTRAINT "StripeCustomer_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;

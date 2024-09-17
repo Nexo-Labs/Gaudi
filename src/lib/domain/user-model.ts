@@ -1,8 +1,9 @@
 import { jwtDecode } from 'jwt-decode';
 import type { Session } from '@auth/sveltekit';
 import { SubscriptionStatus, type Prisma } from '@prisma/client';
-import type { UserWithStripeCustomers } from '../server/prisma/get_user_by_email.js';
-import type { Optional } from './common/Optional.js';
+import { flatMap, type Optional } from './common/Optional.js';
+
+type UsersPrismaModel = Prisma.UserGetPayload<{}>
 
 export interface UserModel {
 	userId: string;
@@ -13,15 +14,21 @@ export interface UserModel {
 }
 
 export function mapSessionToUserModel(session: Session): UserModel | undefined {
-	const user = session.user as UserWithStripeCustomers | null;
-	if (!user) return undefined;
-	if (user.email == null) return undefined;
-	
+	const user = session.user as UsersPrismaModel | null;
+	if (!user || user.email == null) return undefined;
+
+	const activeSubscription = user.subscriptionStatus?.includes(SubscriptionStatus.ACTIVE) ?? false;
+
+	let roles: string[] = [];
+	if (activeSubscription && user.priceId) {
+		roles.push(user.priceId);
+	}
+
 	return {
 		userId: user.id,
 		name: user.name,
 		email: user.email,
 		image: user.image,
-		roles: user.stripeCustomers.flatMap((customer) => SubscriptionStatus[customer.subscriptionStatus])
+		roles: roles
 	};
 }
