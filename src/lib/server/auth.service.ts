@@ -7,7 +7,7 @@ import { type UserModel, mapSessionToUserModel } from '../domain/user-model.js';
 import { externalUrl } from './routing.js';
 import { getUserInfo, processRefreshToken } from './keycloak.service.js';
 import { PrismaClient } from "@prisma/client";
-import type { Adapter } from '@auth/core/adapters';
+import { PrismaAdapter } from "@auth/prisma-adapter";
 
 const authjsSecret = env.PUBLIC_AUTH_SECRET;
 
@@ -47,7 +47,7 @@ type Account = {
 export const db = new PrismaClient();
 
 export const { handle, signIn, signOut } = SvelteKitAuth({
-	adapter: PrismaAdapter(db) as Adapter,
+	adapter: PrismaAdapter(db),
 	trustHost: true,
 	secret: authjsSecret,
 	providers: [Keycloak(kcConfig)],
@@ -95,7 +95,3 @@ export async function restrictAuth(locals: App.Locals): Promise<UserModel> {
 	if (!user) return redirect(303, '/');
 	return user;
 }
-function PrismaAdapter(db: PrismaClient<import("@prisma/client").Prisma.PrismaClientOptions, never, import("@prisma/client/runtime/library").DefaultArgs>): Adapter {
-	throw new Error('Function not implemented.');
-}
-

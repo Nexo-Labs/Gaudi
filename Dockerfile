@@ -13,7 +13,7 @@ COPY --from=Dependencies /app/node_modules ./node_modules
 COPY . .
 
 RUN npx prisma generate
-RUN yarn build
+RUN npm install -g pnpm && pnpm build
 
 FROM node:alpine AS Deploy
 WORKDIR /app
