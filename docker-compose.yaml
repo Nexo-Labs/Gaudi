@@ -18,16 +18,39 @@ services:
       STRIPE_WEBHOOK_SECRET: ${STRIPE_WEBHOOK_SECRET}
       DOMAIN: localhost
 
-      DATABASE_URL: postgresql://admin:devsecret@escota_db:5432/escota_dev_deb?schema=public
+      DATABASE_URL: mongodb://admin:devsecret@escota_db:27017/escota_db?authSource=admin
+    networks:
+      - mongo_net
+    depends_on:
+      - escota_db
 
-  postgres:
+  escota_db:
+    image: mongo:4.2.3-bionic
     container_name: escota_db
-    image: postgres:14-alpine
     ports:
-      - 5432:5432
-    volumes:
-      - ./volumes/postgres:/var/lib/postgresql/data
+      - 27017:27017
     environment:
-      - POSTGRES_PASSWORD=devsecret
-      - POSTGRES_USER=admin
-      - POSTGRES_DB=escota_dev_deb
+      - MONGO_INITDB_DATABASE=escota_db
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=devsecret
+    volumes:
+      - ./volumes/mongodb:/data/db
+      - ./volumes/configdb:/data/configdb
+    networks:
+      - mongo_net
+
+  mongo-express:
+    image: mongo-express:latest
+    container_name: mongo-express
+    environment:
+      - ME_CONFIG_MONGODB_URL=mongodb://admin:devsecret@escota_db:27017
+    ports:
+      - "0.0.0.0:8081:8081"
+    networks:
+      - mongo_net
+    depends_on:
+      - escota_db
+
+networks:
+  mongo_net:
+    driver: bridge

@@ -1,54 +1,82 @@
 datasource db {
-  provider = "postgresql"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
 }
-
+ 
 generator client {
   provider = "prisma-client-js"
-  binaryTargets = ["native", "windows", "linux-musl-openssl-3.0.x"]
-  engine = "node"
 }
+ 
+model User {
+  id              String          @id @default(auto()) @map("_id") @db.ObjectId
+  name            String?
+  email           String?         @unique
+  emailVerified   DateTime?
+  image           String?
+  accounts        Account[]
+  sessions        Session[]
 
+  stripeCustomers StripeCustomer[]
+  customerId            String  @db.ObjectId
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+ 
 model Account {
-  id                String  @id @default(cuid())
-  userId            String
+  id                String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId            String  @db.ObjectId
   type              String
   provider          String
   providerAccountId String
-  refresh_token     String? @db.Text
-  access_token      String? @db.Text
+  refresh_token     String? @db.String
+  access_token      String? @db.String
   expires_at        Int?
   token_type        String?
   scope             String?
-  id_token          String? @db.Text
+  id_token          String? @db.String
   session_state     String?
-
+ 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+ 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
+ 
   @@unique([provider, providerAccountId])
 }
-
+ 
 model Session {
-  id           String   @id @default(cuid())
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
   sessionToken String   @unique
-  userId       String
+  userId       String   @db.ObjectId
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+ 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+ 
+model VerificationToken {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  identifier String
+  token      String
+  expires    DateTime
+ 
+  @@unique([identifier, token])
 }
 
-model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
-  image         String?
-  accounts      Account[]
-  sessions      Session[]
 
-  stripeCustomers StripeCustomer[]
+model StripeCustomer {
+  customerId         String @id @default(auto()) @map("_id") @db.ObjectId
+  subscriptionId     String
+  subscriptionStatus SubscriptionStatus
+  plan               String
+  priceId            String
+  purchases          Json @default("[]")
+  userId             String  @db.ObjectId
+  user               User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
-// customization for AirBadge
 enum SubscriptionStatus {
   INCOMPLETE
   INCOMPLETE_EXPIRED
@@ -57,23 +85,4 @@ enum SubscriptionStatus {
   PAST_DUE
   CANCELED
   UNPAID
-}
-
-model VerificationToken {
-  identifier String
-  token      String   @unique
-  expires    DateTime
-
-  @@unique([identifier, token])
-}
-
-model StripeCustomer {
-  customerId         String @id @map("_id")
-  subscriptionId     String
-  subscriptionStatus SubscriptionStatus
-  plan               String
-  priceId            String
-  purchases          Json  @default("[]")
-  userId             String
-  user               User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
