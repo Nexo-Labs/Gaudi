@@ -18,7 +18,7 @@ services:
       STRIPE_WEBHOOK_SECRET: ${STRIPE_WEBHOOK_SECRET}
       DOMAIN: localhost
 
-      DATABASE_URL: postgresql://admin:devsecret@escota_db:5432/escota_dev_deb?schema=public
+      DATABASE_URL: postgresql://admin:devsecret@escota_db:5432/escota_web?schema=public
 
   postgres:
     container_name: escota_db
@@ -30,4 +30,4 @@ services:
     environment:
       - POSTGRES_PASSWORD=devsecret
       - POSTGRES_USER=admin
-      - POSTGRES_DB=escota_dev_deb
+      - POSTGRES_DB=escota_web
