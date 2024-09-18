@@ -1,7 +1,9 @@
 import { error, json } from '@sveltejs/kit';
 import type Stripe from 'stripe';
 import { env } from '$env/dynamic/private';
-import { stripe } from '$src/lib/server/stripe_service.js';
+import { stripe } from '$src/lib/server/stripe/stripe_service.js';
+import { syncCheckout } from '$src/lib/server/stripe/sync_checkout.js';
+import { syncSubscription } from '$src/lib/server/stripe/sync_subscription.js';
 
 export const POST = async ({ request }) => {
 	const whSecret = env.STRIPE_WEBHOOK_SECRET;
@@ -12,12 +14,17 @@ export const POST = async ({ request }) => {
 	try {
 		const event = stripe.webhooks.constructEvent(body, signature, whSecret);
 
-		if (event.type === 'customer.subscription.updated') {
-			const sessionWithCustomer = await stripe.checkout.sessions.retrieve(event.data.object.id, {
-				expand: ['customer']
-			});
-
-			const customer = sessionWithCustomer.customer as Stripe.Customer;
+		switch (event.type) {
+			case 'checkout.session.completed':
+				await syncCheckout(event.data.object.id)
+				break
+			case 'customer.subscription.created':
+			case 'customer.subscription.updated':
+			case 'customer.subscription.deleted':
+			case 'customer.subscription.trial_will_end':
+			case 'customer.subscription.paused':
+				await syncSubscription(event.data.object.id)
+				break
 		}
 	} catch (err) {
 		console.log('Something went wrong.', err);

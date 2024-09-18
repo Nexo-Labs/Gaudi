@@ -44,11 +44,16 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
+  roles         String[]
 
-  stripeCustomers StripeCustomer[]
+  customerId         String?
+  subscriptionId     String?
+  subscriptionStatus SubscriptionStatus?
+  plan               String?
+  priceId            String?
+  purchases          Json @default("[]")
 }
 
-// customization for AirBadge
 enum SubscriptionStatus {
   INCOMPLETE
   INCOMPLETE_EXPIRED
@@ -65,15 +70,4 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
-}
-
-model StripeCustomer {
-  customerId         String @id @map("_id")
-  subscriptionId     String
-  subscriptionStatus SubscriptionStatus
-  plan               String
-  priceId            String
-  purchases          Json  @default("[]")
-  userId             String
-  user               User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
