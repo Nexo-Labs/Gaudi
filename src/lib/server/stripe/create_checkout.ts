@@ -24,6 +24,7 @@ export async function createCheckout(
 		metadata: {
 			user_id: user.userId,
 			price_id: price.id,
+			product_id: price.product as string,
 			lookup_key: price.lookup_key
 		},
 		line_items: [{ price: price.id, quantity }],

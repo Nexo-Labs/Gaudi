@@ -4,7 +4,7 @@ import { stripe } from "./stripe_service.js"
 
 export async function syncSubscription(subscriptionId: string) {
     const subscription = await stripe.subscriptions.retrieve(subscriptionId)
-    const { userId } = subscription.metadata
+    const { user_id: userId } = subscription.metadata
 
     if (!userId) throw new Error(`Missing user id metadata for subscription '${subscriptionId}'`)
 

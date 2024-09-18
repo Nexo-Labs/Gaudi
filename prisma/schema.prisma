@@ -51,7 +51,7 @@ model User {
   subscriptionStatus SubscriptionStatus?
   plan               String?
   priceId            String?
-  purchases          Json[] @default([])
+  purchases          Json @default("[]")
 }
 
 enum SubscriptionStatus {
