@@ -15,8 +15,7 @@ export async function getUserInfo(accessToken: string): Promise<string[]> {
 
    const userInfo = await response.json();
    return [
-      ...userInfo.resource_access.web.roles,
-      ...userInfo.resource_access.account.roles, 
+      ...userInfo.roles,
       ...userInfo.realm_access.roles
    ];
 }
