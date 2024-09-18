@@ -1,4 +1,4 @@
-import { SubscriptionStatus } from "@prisma/client"
+import { subscriptionStatus } from "$src/lib/domain/user-model.js"
 import { prismaClient } from "../prisma/prisma_client.js"
 import { stripe } from "./stripe_service.js"
 
@@ -11,7 +11,7 @@ export async function syncSubscription(subscriptionId: string) {
     const item = subscription.items.data[0]
     const { price } = item
     try {
-        const statusKey = subscription.status.toUpperCase() as keyof typeof SubscriptionStatus;
+        const statusKey = subscription.status.toUpperCase() as keyof typeof subscriptionStatus;
 
         await prismaClient.user.update({
             where: {
@@ -20,7 +20,7 @@ export async function syncSubscription(subscriptionId: string) {
             data: {
                 customerId: { set: subscription.customer as string },
                 subscriptionId: { set: subscription.id },
-                subscriptionStatus: { set: SubscriptionStatus[statusKey] },
+                subscriptionStatus: { set: subscriptionStatus[statusKey] },
                 plan: { set: price.lookup_key },
                 priceId: { set: price.id },
             }
