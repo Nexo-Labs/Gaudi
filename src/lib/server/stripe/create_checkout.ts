@@ -25,7 +25,11 @@ export async function createCheckout(
 			user_id: user.userId,
 			price_id: price.id,
 			product_id: price.product as string,
-			lookup_key: price.lookup_key
+			lookup_key: price.lookup_key,
+			billing_scheme: price.billing_scheme,
+			currency: price.currency,
+			unit_amount: price.unit_amount,
+			quantity: quantity
 		},
 		line_items: [{ price: price.id, quantity }],
 		...(recurring ? { subscription_data } : {})
