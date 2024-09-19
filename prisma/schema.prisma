@@ -37,24 +37,93 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
-  image         String?
-  accounts      Account[]
-  sessions      Session[]
-  roles         String[]
+  id                String    @id @default(cuid())
+  name              String?
+  email             String?   @unique
+  emailVerified     DateTime?
+  image             String?
+  accounts          Account[]
+  sessions          Session[]
+  roles             String[]
+  stripeRoles       String[]
+  locales           String[]
 
   customerId         String?
+  customer           StripeCustomer?
   subscriptionId     String?
-  subscriptionStatus SubscriptionStatus?
-  plan               String?
+  subscriptionStatus StripeSubscriptionStatus?
   priceId            String?
-  purchases          Json @default("[]")
 }
 
-enum SubscriptionStatus {
+model StripeCustomer {
+  id            String  @id @default(cuid())
+  userId        String  @unique
+  user          User    @relation(fields: [userId], references: [id])
+  currency      String
+  delinquent    Boolean
+  name          String
+  description   String?
+  email         String
+  phone         String
+  invoicePrefix String
+  taxExempt     String
+  created       Int
+  balance       Int
+
+  checkouts     StripeCheckoutSession[]
+}
+
+
+model StripeCheckoutSession {
+  id           String @id @default(cuid())
+  customerId   String
+  user         StripeCustomer    @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  unitAmount   Int
+  quantity     Int
+  currency     String
+  lookupKey    String
+  invoiceId    String
+  mode         String
+  subscription String
+
+  lineItems StripeLineItem[]
+}
+
+model StripeLineItem {
+  id                    String @id
+  ammountDiscount       Int
+  ammountSubtotal       Int
+  ammountTotal          Int
+  ammountTax            Int
+  currency              String
+  description           String
+  price_active          Boolean
+  price_billingScheme   String
+  price_created         Int
+  price_id              String
+  price_liveMode        Boolean
+  price_lookupKey       String
+
+  checkoutSessionId     String
+  checkoutSession       StripeCheckoutSession @relation(fields: [checkoutSessionId], references: [id])
+  productId             String
+  product               StripeProduct @relation(fields: [productId], references: [id])
+}
+
+model StripeProduct {
+  id                 String  @id @default(cuid())
+  active             Boolean
+  name               String
+  description        String
+  tax_code           String
+  type               String
+  created            Int
+  updated            Int
+  url                String?
+  checkoutSessions   StripeLineItem[]
+}
+
+enum StripeSubscriptionStatus {
   INCOMPLETE
   INCOMPLETE_EXPIRED
   TRIALING

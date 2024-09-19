@@ -1,5 +1,5 @@
 import type Stripe from "stripe";
-import { stripe } from "./stripe_service.js";
+import { stripe } from "../stripe_service.js";
 
 export async function updateSubscription(
 	suscriptionId: string,

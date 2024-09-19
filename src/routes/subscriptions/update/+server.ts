@@ -1,6 +1,6 @@
 import { relativeUrls } from '$src/lib/domain/routing.js';
 import { restrictAuth } from '$src/lib/server/auth.service.js';
-import { updateSubscription } from '$src/lib/server/stripe/update_subscription.js';
+import { updateSubscription } from '$src/lib/server/stripe/subscriptions/update_subscription.js';
 import { error, redirect } from '@sveltejs/kit';
 
 export const GET = async ({ locals, url }) => {

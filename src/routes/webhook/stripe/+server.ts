@@ -1,9 +1,8 @@
 import { error, json } from '@sveltejs/kit';
-import type Stripe from 'stripe';
 import { env } from '$env/dynamic/private';
 import { stripe } from '$src/lib/server/stripe/stripe_service.js';
-import { syncCheckout } from '$src/lib/server/stripe/sync_checkout.js';
-import { syncSubscription } from '$src/lib/server/stripe/sync_subscription.js';
+import { syncCheckout } from '$src/lib/server/stripe/checkout/sync_checkout.js';
+import { syncSubscription } from '$src/lib/server/stripe/subscriptions/sync_subscription.js';
 
 export const POST = async ({ request }) => {
 	const whSecret = env.STRIPE_WEBHOOK_SECRET;
@@ -16,7 +15,7 @@ export const POST = async ({ request }) => {
 
 		switch (event.type) {
 			case 'checkout.session.completed':
-				await syncCheckout(event.data.object.id)
+				await syncCheckout(event.data.object)
 				break
 			case 'customer.subscription.created':
 			case 'customer.subscription.updated':

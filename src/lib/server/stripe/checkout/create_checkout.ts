@@ -1,7 +1,7 @@
 import { relativeUrls } from "$src/lib/domain/routing.js";
 import type { UserModel } from "$src/lib/domain/user-model.js";
 import type Stripe from "stripe";
-import { stripe } from "./stripe_service.js";
+import { stripe } from "../stripe_service.js";
 
 export async function createCheckout(
 	url: URL,
@@ -21,16 +21,6 @@ export async function createCheckout(
 		mode: recurring ? 'subscription' : 'payment',
 		customer_email: user.email,
 		client_reference_id: user.userId,
-		metadata: {
-			user_id: user.userId,
-			price_id: price.id,
-			product_id: price.product as string,
-			lookup_key: price.lookup_key,
-			billing_scheme: price.billing_scheme,
-			currency: price.currency,
-			unit_amount: price.unit_amount,
-			quantity: quantity
-		},
 		line_items: [{ price: price.id, quantity }],
 		...(recurring ? { subscription_data } : {})
 	});

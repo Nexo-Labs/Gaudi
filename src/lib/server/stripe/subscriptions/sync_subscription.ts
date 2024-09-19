@@ -1,6 +1,6 @@
 import { subscriptionStatus } from "$src/lib/domain/user-model.js"
-import { prismaClient } from "../prisma/prisma_client.js"
-import { stripe } from "./stripe_service.js"
+import { prismaClient } from "../../prisma/prisma_client.js"
+import { stripe } from "../stripe_service.js"
 
 export async function syncSubscription(subscriptionId: string) {
     const subscription = await stripe.subscriptions.retrieve(subscriptionId)
@@ -10,6 +10,7 @@ export async function syncSubscription(subscriptionId: string) {
 
     const item = subscription.items.data[0]
     const { price } = item
+    subscription.items
     try {
         const statusKey = subscription.status.toUpperCase() as keyof typeof subscriptionStatus;
 
