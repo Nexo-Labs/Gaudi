@@ -1,7 +1,6 @@
 <script lang="ts">
-	import { flatMap } from '$src/lib/domain/common/Optional.js';
+	import { flatMap } from '$src/lib/domain/common/optional_helpers.js';
 	import { relativeUrls } from '$src/lib/domain/routing.js';
-	import Button from '$src/lib/view/common/Button.svelte';
 	import NavButton from '$src/lib/view/common/NavButton.svelte';
 	import type { PageData } from './$types.js';
 

@@ -7,7 +7,7 @@
 	import LoginButton from './login_button.svelte';
 	import LogoutButton from './logout_button.svelte';
 	import type { UserModel } from '$src/lib/domain/user-model.js';
-	import type { Optional } from '$src/lib/domain/common/Optional.js';
+	import type { Optional } from '$src/lib/domain/common/optional_helpers.js';
 
 	let isMenuOpen = false;
 	export let user: Optional<UserModel>;

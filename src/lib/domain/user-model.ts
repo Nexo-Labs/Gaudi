@@ -1,4 +1,4 @@
-import { type Optional } from './common/Optional.js';
+import { type Optional } from './common/optional_helpers.js';
 
 import type { StripeSubscriptionStatus } from '@prisma/client'
 

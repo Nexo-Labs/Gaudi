@@ -2,7 +2,7 @@ import { SvelteKitAuth, type Session } from '@auth/sveltekit';
 import Keycloak from '@auth/sveltekit/providers/keycloak';
 import { env } from '$env/dynamic/public';
 import { redirect } from '@sveltejs/kit';
-import { flatMap, type Optional } from '../domain/common/Optional.js';
+import { flatMap, type Optional } from '../domain/common/optional_helpers.js';
 import { subscriptionStatus, type UserModel } from '../domain/user-model.js';
 import { externalUrl } from './routing.js';
 import { PrismaAdapter } from "@auth/prisma-adapter";
@@ -38,7 +38,7 @@ export const { handle, signIn, signOut } = SvelteKitAuth({
 });
 
 export async function getUser(locals: App.Locals): Promise<Optional<UserModel>> {
-	return flatMap(await locals.auth(), session => mapSessionToUserModel(session));
+	return (await locals.auth()).notNull(session => mapSessionToUserModel(session));
 }
 
 export async function restrictAuth(locals: App.Locals): Promise<UserModel> {

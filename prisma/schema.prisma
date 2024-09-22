@@ -59,14 +59,14 @@ model StripeCustomer {
   id            String  @id @default(cuid())
   userId        String  @unique
   user          User    @relation(fields: [userId], references: [id])
-  currency      String
-  delinquent    Boolean
-  name          String
+  currency      String?
+  delinquent    Boolean?
+  name          String?
   description   String?
-  email         String
-  phone         String
-  invoicePrefix String
-  taxExempt     String
+  email         String?
+  phone         String?  
+  invoicePrefix String?
+  taxExempt     String?
   created       Int
   balance       Int
 
@@ -85,18 +85,51 @@ model StripeSubscription {
 
 
 model StripeCheckoutSession {
-  id           String @id @default(cuid())
-  customerId   String
-  user         StripeCustomer    @relation(fields: [customerId], references: [id], onDelete: Cascade)
-  unitAmount   Int
-  quantity     Int
-  currency     String
-  lookupKey    String
-  invoiceId    String
-  mode         String
-  subscription String
+  id                        String   @id
 
-  lineItems    StripeLineItem[]
+  customerId                String?
+  user                      StripeCustomer? @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  unitAmount                Int?
+  totalAmount               Int?
+  currency                  String?
+  allowPromotionCodes       Boolean?
+  clientReferenceId         String?
+  clientSecret              String?
+  consent                   String?
+  consentCollection         String?
+  created                   Int
+  expiresAt                 Int?
+  invoiceId                 String?
+  invoiceCreation           String?
+  locale                    String?
+  mode                      String
+  paymentIntentId           String?
+  paymentStatus             String
+  recoveredFrom             String?
+  subscriptionId            String?
+  successUrl                String?
+  cancelUrl                 String?
+  status                    String?
+  url                       String?
+  livemode                  Boolean
+  shippingAddressCollection String?
+  shippingDetails           String?
+
+  lineItems                 StripeLineItem[]
+}
+
+model StripeProduct {
+  id                 String  @id @default(cuid())
+  active             Boolean
+  name               String
+  description        String?
+  tax_code           String?
+  type               String
+  created            Int
+  updated            Int
+  unitLabel          String?
+  url                String?
+  checkoutSessions   StripeLineItem[]
 }
 
 model StripeLineItem {
@@ -118,19 +151,6 @@ model StripeLineItem {
   checkoutSession       StripeCheckoutSession @relation(fields: [checkoutSessionId], references: [id])
   productId             String
   product               StripeProduct @relation(fields: [productId], references: [id])
-}
-
-model StripeProduct {
-  id                 String  @id @default(cuid())
-  active             Boolean
-  name               String
-  description        String
-  tax_code           String
-  type               String
-  created            Int
-  updated            Int
-  url                String?
-  checkoutSessions   StripeLineItem[]
 }
 
 enum StripeSubscriptionStatus {
