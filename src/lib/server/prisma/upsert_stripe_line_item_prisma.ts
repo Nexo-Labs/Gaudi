@@ -1,5 +1,6 @@
 import type Stripe from "stripe";
 import { prismaClient } from "./prisma_client.js";
+import { notNullAsync } from "$src/lib/domain/common/optional_helpers.js";
 
 export async function upsertLineItem(lineItem: Stripe.LineItem, checkoutId: string) {
   const product = lineItem.price?.product as Stripe.Product | undefined;
@@ -10,19 +11,19 @@ export async function upsertLineItem(lineItem: Stripe.LineItem, checkoutId: stri
     ammountTax: lineItem.amount_tax,
     currency: lineItem.currency,
     description: lineItem.description,
-    price_active: lineItem.price?.active,
-    price_billingScheme: lineItem.price?.billing_scheme,
-    price_created: lineItem.price?.created,
-    price_id: lineItem.price?.id,
-    price_liveMode: lineItem.price?.livemode,
-    price_lookupKey: lineItem.price?.lookup_key,
   }
+
+  await notNullAsync(lineItem.price, price => upsertPrice(price))
+
   await prismaClient.stripeLineItem.upsert({
     where: { id: lineItem.id },
     update: {
       ...lineItemData,
       product: {
         connect: { id: product?.id }
+      },
+      price: {
+        connect: { id: lineItem.price?.id }
       },
       checkoutSession: {
         connect: { id: checkoutId }
@@ -34,9 +35,34 @@ export async function upsertLineItem(lineItem: Stripe.LineItem, checkoutId: stri
       product: {
         connect: { id: product?.id }
       },
+      price: {
+        connect: { id: lineItem.price?.id }
+      },
       checkoutSession: {
         connect: { id: checkoutId }
       }
     }
   });
+}
+
+export async function upsertPrice(price: Stripe.Price) {
+  const priceData = {
+    active: price.active,
+    billingScheme: price.billing_scheme,
+    created: price.created,
+    liveMode: price.livemode,
+    lookupKey: price.lookup_key,
+  }
+
+  await prismaClient.stripePrice.upsert({
+    where: { id: price.id },
+    update: {
+      ...priceData,
+    },
+    create: {
+      id: price.id,
+      ...priceData,
+    }
+  });
+  
 }

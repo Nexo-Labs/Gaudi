@@ -9,7 +9,6 @@ export async function upsertStripeCheckout(checkout: Stripe.Checkout.Session): P
   }
 
   const checkoutSessionData = {
-    customerId: customerId,
     unitAmount: checkout.amount_subtotal,
     totalAmount: checkout.amount_total,
     currency: checkout.currency,
@@ -45,7 +44,7 @@ export async function upsertStripeCheckout(checkout: Stripe.Checkout.Session): P
       id: checkout.id,
       created: checkout.created,
       ...checkoutSessionData,
-      user: {
+      customer: {
         connect: { id: customerId }
       }
     }

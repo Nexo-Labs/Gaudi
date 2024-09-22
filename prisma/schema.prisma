@@ -88,7 +88,7 @@ model StripeCheckoutSession {
   id                        String   @id
 
   customerId                String?
-  user                      StripeCustomer? @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  customer                  StripeCustomer? @relation(fields: [customerId], references: [id], onDelete: SetNull)
   unitAmount                Int?
   totalAmount               Int?
   currency                  String?
@@ -123,7 +123,7 @@ model StripeProduct {
   active             Boolean
   name               String
   description        String?
-  tax_code           String?
+  taxCode            String?
   type               String
   created            Int
   updated            Int
@@ -140,17 +140,23 @@ model StripeLineItem {
   ammountTax            Int
   currency              String
   description           String
-  price_active          Boolean
-  price_billingScheme   String
-  price_created         Int
-  price_id              String
-  price_liveMode        Boolean
-  price_lookupKey       String
 
+  priceId               String
+  price                 StripePrice @relation(fields: [priceId], references: [id])
   checkoutSessionId     String
-  checkoutSession       StripeCheckoutSession @relation(fields: [checkoutSessionId], references: [id])
+  checkoutSession       StripeCheckoutSession @relation(fields: [checkoutSessionId], references: [id], onDelete: Cascade)
   productId             String
   product               StripeProduct @relation(fields: [productId], references: [id])
+}
+
+model StripePrice {
+    id                    String @id
+    lookupKey             String?
+    active                Boolean
+    billingScheme         String
+    created               Int
+    liveMode              Boolean
+    lineItems             StripeLineItem[]
 }
 
 enum StripeSubscriptionStatus {

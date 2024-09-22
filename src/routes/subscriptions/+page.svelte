@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { flatMap } from '$src/lib/domain/common/optional_helpers.js';
+	import { notNull } from '$src/lib/domain/common/optional_helpers.js';
 	import { relativeUrls } from '$src/lib/domain/routing.js';
 	import NavButton from '$src/lib/view/common/NavButton.svelte';
 	import type { PageData } from './$types.js';
@@ -47,9 +47,9 @@
 										false
 									)}
 								/>
-								{@const canceledDate = flatMap(
+								{@const canceledDate = notNull(
 									subscriptionByPrice.canceled?.cancelAt,
-									(cancelAt) => new Date(cancelAt * 1000)
+									cancelAt => new Date(cancelAt * 1000)
 								)}
 								{#if canceledDate}
 									<p>La suscripción se cancelará el {canceledDate.toLocaleDateString()}</p>

@@ -1,7 +1,10 @@
 export type Optional<T> = T | undefined | null;
 
-export function flatMap<T, U>(value: Optional<T>, fn: (val: T) => Optional<U>): Optional<U> {
+export function notNull<T, U>(value: Optional<T>, fn: (val: T) => Optional<U>): Optional<U> {
 	return value != null ? fn(value) : undefined;
+}
+export async function notNullAsync<T, U>(value: Optional<T>, fn: (val: T) => Promise<Optional<U>>): Promise<Optional<U>> {
+	return value != null ? await fn(value) : undefined;
 }
 
 Array.prototype.mapNotNull = function <T, U>(callback: (value: T, index: number, array: T[]) => U | null | undefined): U[] {
@@ -11,13 +14,5 @@ Array.prototype.mapNotNull = function <T, U>(callback: (value: T, index: number,
 declare global {
 	interface Array<T> {
 		mapNotNull<U>(callback: (value: T, index: number, array: T[]) => U | null | undefined): U[];
-	}
-	interface Object {
-		notNull<T, U>(value: Optional<T>, fn: (val: T) => Optional<U>): Optional<U>;
-	  }
-	
+	}	
 }
-
-Object.prototype.notNull = function<T, U>(value: Optional<T>, fn: (val: T) => Optional<U>): Optional<U> {
-	return value != null ? fn(value) : undefined;
-};

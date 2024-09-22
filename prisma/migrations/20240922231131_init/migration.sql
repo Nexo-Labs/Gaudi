@@ -51,14 +51,14 @@ CREATE TABLE "User" (
 CREATE TABLE "StripeCustomer" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
-    "currency" TEXT NOT NULL,
-    "delinquent" BOOLEAN NOT NULL,
-    "name" TEXT NOT NULL,
+    "currency" TEXT,
+    "delinquent" BOOLEAN,
+    "name" TEXT,
     "description" TEXT,
-    "email" TEXT NOT NULL,
-    "phone" TEXT NOT NULL,
-    "invoicePrefix" TEXT NOT NULL,
-    "taxExempt" TEXT NOT NULL,
+    "email" TEXT,
+    "phone" TEXT,
+    "invoicePrefix" TEXT,
+    "taxExempt" TEXT,
     "created" INTEGER NOT NULL,
     "balance" INTEGER NOT NULL,
     "subscriptionId" TEXT,
@@ -78,16 +78,50 @@ CREATE TABLE "StripeSubscription" (
 -- CreateTable
 CREATE TABLE "StripeCheckoutSession" (
     "id" TEXT NOT NULL,
-    "customerId" TEXT NOT NULL,
-    "unitAmount" INTEGER NOT NULL,
-    "quantity" INTEGER NOT NULL,
-    "currency" TEXT NOT NULL,
-    "lookupKey" TEXT NOT NULL,
-    "invoiceId" TEXT NOT NULL,
+    "customerId" TEXT,
+    "unitAmount" INTEGER,
+    "totalAmount" INTEGER,
+    "currency" TEXT,
+    "allowPromotionCodes" BOOLEAN,
+    "clientReferenceId" TEXT,
+    "clientSecret" TEXT,
+    "consent" TEXT,
+    "consentCollection" TEXT,
+    "created" INTEGER NOT NULL,
+    "expiresAt" INTEGER,
+    "invoiceId" TEXT,
+    "invoiceCreation" TEXT,
+    "locale" TEXT,
     "mode" TEXT NOT NULL,
-    "subscription" TEXT NOT NULL,
+    "paymentIntentId" TEXT,
+    "paymentStatus" TEXT NOT NULL,
+    "recoveredFrom" TEXT,
+    "subscriptionId" TEXT,
+    "successUrl" TEXT,
+    "cancelUrl" TEXT,
+    "status" TEXT,
+    "url" TEXT,
+    "livemode" BOOLEAN NOT NULL,
+    "shippingAddressCollection" TEXT,
+    "shippingDetails" TEXT,
 
     CONSTRAINT "StripeCheckoutSession_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "StripeProduct" (
+    "id" TEXT NOT NULL,
+    "active" BOOLEAN NOT NULL,
+    "name" TEXT NOT NULL,
+    "description" TEXT,
+    "taxCode" TEXT,
+    "type" TEXT NOT NULL,
+    "created" INTEGER NOT NULL,
+    "updated" INTEGER NOT NULL,
+    "unitLabel" TEXT,
+    "url" TEXT,
+
+    CONSTRAINT "StripeProduct_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -99,12 +133,7 @@ CREATE TABLE "StripeLineItem" (
     "ammountTax" INTEGER NOT NULL,
     "currency" TEXT NOT NULL,
     "description" TEXT NOT NULL,
-    "price_active" BOOLEAN NOT NULL,
-    "price_billingScheme" TEXT NOT NULL,
-    "price_created" INTEGER NOT NULL,
-    "price_id" TEXT NOT NULL,
-    "price_liveMode" BOOLEAN NOT NULL,
-    "price_lookupKey" TEXT NOT NULL,
+    "priceId" TEXT NOT NULL,
     "checkoutSessionId" TEXT NOT NULL,
     "productId" TEXT NOT NULL,
 
@@ -112,18 +141,15 @@ CREATE TABLE "StripeLineItem" (
 );
 
 -- CreateTable
-CREATE TABLE "StripeProduct" (
+CREATE TABLE "StripePrice" (
     "id" TEXT NOT NULL,
+    "lookupKey" TEXT,
     "active" BOOLEAN NOT NULL,
-    "name" TEXT NOT NULL,
-    "description" TEXT NOT NULL,
-    "tax_code" TEXT NOT NULL,
-    "type" TEXT NOT NULL,
+    "billingScheme" TEXT NOT NULL,
     "created" INTEGER NOT NULL,
-    "updated" INTEGER NOT NULL,
-    "url" TEXT,
+    "liveMode" BOOLEAN NOT NULL,
 
-    CONSTRAINT "StripeProduct_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "StripePrice_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -167,10 +193,13 @@ ALTER TABLE "StripeCustomer" ADD CONSTRAINT "StripeCustomer_userId_fkey" FOREIGN
 ALTER TABLE "StripeSubscription" ADD CONSTRAINT "StripeSubscription_customerId_fkey" FOREIGN KEY ("customerId") REFERENCES "StripeCustomer"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "StripeCheckoutSession" ADD CONSTRAINT "StripeCheckoutSession_customerId_fkey" FOREIGN KEY ("customerId") REFERENCES "StripeCustomer"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "StripeCheckoutSession" ADD CONSTRAINT "StripeCheckoutSession_customerId_fkey" FOREIGN KEY ("customerId") REFERENCES "StripeCustomer"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "StripeLineItem" ADD CONSTRAINT "StripeLineItem_checkoutSessionId_fkey" FOREIGN KEY ("checkoutSessionId") REFERENCES "StripeCheckoutSession"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "StripeLineItem" ADD CONSTRAINT "StripeLineItem_priceId_fkey" FOREIGN KEY ("priceId") REFERENCES "StripePrice"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "StripeLineItem" ADD CONSTRAINT "StripeLineItem_checkoutSessionId_fkey" FOREIGN KEY ("checkoutSessionId") REFERENCES "StripeCheckoutSession"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "StripeLineItem" ADD CONSTRAINT "StripeLineItem_productId_fkey" FOREIGN KEY ("productId") REFERENCES "StripeProduct"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
