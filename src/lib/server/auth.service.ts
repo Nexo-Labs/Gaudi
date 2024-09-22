@@ -9,7 +9,7 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import { prismaClient } from './prisma/prisma_client.js';
 import { getUserInfo } from './keycloak.service.js';
 import { updateUserRoles } from './prisma/update_user_roles.js';
-import { SubscriptionStatus, type Prisma } from '@prisma/client';
+import { StripeSubscriptionStatus, type Prisma } from '@prisma/client';
 
 const authjsSecret = env.PUBLIC_AUTH_SECRET;
 

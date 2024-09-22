@@ -71,6 +71,16 @@ model StripeCustomer {
   balance       Int
 
   checkouts     StripeCheckoutSession[]
+  subscriptionId String?
+  subscription  StripeSubscription?
+}
+
+model StripeSubscription {
+  id                    String  @id @default(cuid())
+  subscriptionStatus    StripeSubscriptionStatus
+  
+  customerId            String  @unique
+  customer              StripeCustomer @relation(fields: [customerId], references: [id])
 }
 
 
@@ -86,7 +96,7 @@ model StripeCheckoutSession {
   mode         String
   subscription String
 
-  lineItems StripeLineItem[]
+  lineItems    StripeLineItem[]
 }
 
 model StripeLineItem {

@@ -1,11 +1,9 @@
-import { jwtDecode } from 'jwt-decode';
-import type { Session } from '@auth/sveltekit';
-import { flatMap, type Optional } from './common/Optional.js';
+import { type Optional } from './common/Optional.js';
 
-import type { SubscriptionStatus as SubscriptionStatusOrigin } from '@prisma/client'
+import type { StripeSubscriptionStatus } from '@prisma/client'
 
 // Guarantee that the implementation corresponds to the original type
-export const subscriptionStatus: { [k in SubscriptionStatusOrigin ]: k } = {
+export const subscriptionStatus: { [k in StripeSubscriptionStatus ]: k } = {
 	INCOMPLETE: 'INCOMPLETE',
 	INCOMPLETE_EXPIRED: 'INCOMPLETE_EXPIRED',
 	TRIALING: 'TRIALING',
@@ -15,7 +13,7 @@ export const subscriptionStatus: { [k in SubscriptionStatusOrigin ]: k } = {
 	UNPAID: 'UNPAID'
 } as const
 
-export type SubscriptionStatus = SubscriptionStatusOrigin
+export type SubscriptionStatus = StripeSubscriptionStatus
 
 export interface UserModel {
 	userId: string;
