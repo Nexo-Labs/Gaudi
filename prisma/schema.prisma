@@ -50,9 +50,6 @@ model User {
 
   customerId         String?
   customer           StripeCustomer?
-  subscriptionId     String?
-  subscriptionStatus StripeSubscriptionStatus?
-  priceId            String?
 }
 
 model StripeCustomer {
@@ -77,12 +74,36 @@ model StripeCustomer {
 
 model StripeSubscription {
   id                    String  @id @default(cuid())
-  subscriptionStatus    StripeSubscriptionStatus
-  
+
+  startDate             Int
+  endedAt               Int?
+  currentPeriodEnd      Int
+  currentPeriodStart    Int
+  canceledAt            Int?
+  invoiceId             String?
+  description           String?
+  trialStart            Int?
+  trialEnd              Int?
+  currency              String
+  status                StripeSubscriptionStatus
+  discounts             Json?
+  discount              Json?
+  subscriptionItems     StripeSubscriptionItem[]
   customerId            String  @unique
   customer              StripeCustomer @relation(fields: [customerId], references: [id])
 }
 
+model StripeSubscriptionItem {
+  id                    String  @id @default(cuid())
+  quantity              Int?
+  created               Int
+  discounts             Json?
+
+  subscriptionId        String
+  subscription          StripeSubscription @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
+  priceId               String
+  price                 StripePrice @relation(fields: [priceId], references: [id])
+}
 
 model StripeCheckoutSession {
   id                        String   @id
@@ -119,17 +140,30 @@ model StripeCheckoutSession {
 }
 
 model StripeProduct {
-  id                 String  @id @default(cuid())
-  active             Boolean
-  name               String
-  description        String?
-  taxCode            String?
-  type               String
-  created            Int
-  updated            Int
-  unitLabel          String?
-  url                String?
-  checkoutSessions   StripeLineItem[]
+  id                   String          @id @default(cuid())
+  
+  active               Boolean
+  name                 String
+  description          String?
+  taxCode              String?
+  type                 StripeProductType
+  created              Int
+  updated              Int
+  unitLabel            String?
+  url                  String?
+  images               String[]
+  livemode             Boolean
+  marketingFeatures    Json?
+  packageDimensions    Json?
+  shippable            Boolean?
+  statementDescriptor  String?
+
+  prices        StripePrice[]
+}
+
+enum StripeProductType {
+  service
+  good
 }
 
 model StripeLineItem {
@@ -145,8 +179,9 @@ model StripeLineItem {
   price                 StripePrice @relation(fields: [priceId], references: [id])
   checkoutSessionId     String
   checkoutSession       StripeCheckoutSession @relation(fields: [checkoutSessionId], references: [id], onDelete: Cascade)
-  productId             String
-  product               StripeProduct @relation(fields: [productId], references: [id])
+
+  taxes                 Json?
+  discounts             Json?
 }
 
 model StripePrice {
@@ -157,6 +192,11 @@ model StripePrice {
     created               Int
     liveMode              Boolean
     lineItems             StripeLineItem[]
+    subscriptionItem      StripeSubscriptionItem[]
+
+    productId             String
+    product               StripeProduct @relation(fields: [productId], references: [id])  
+
 }
 
 enum StripeSubscriptionStatus {

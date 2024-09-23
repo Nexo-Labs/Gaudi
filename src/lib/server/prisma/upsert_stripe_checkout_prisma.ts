@@ -30,23 +30,19 @@ export async function upsertStripeCheckout(checkout: Stripe.Checkout.Session): P
     cancelUrl: checkout.cancel_url,
     status: checkout.status,
     url: checkout.url,
+    created: checkout.created,
     livemode: checkout.livemode,
     shippingAddressCollection: checkout.shipping_address_collection ? JSON.stringify(checkout.shipping_address_collection) : null,
     shippingDetails: checkout.shipping_details ? JSON.stringify(checkout.shipping_details) : null,
+    customer: { connect: { id: customerId } }
   };
 
   await prismaClient.stripeCheckoutSession.upsert({
     where: { id: checkout.id },
-    update: {
-      ...checkoutSessionData,
-    },
+    update: checkoutSessionData,
     create: {
       id: checkout.id,
-      created: checkout.created,
       ...checkoutSessionData,
-      customer: {
-        connect: { id: customerId }
-      }
     }
   });
 }

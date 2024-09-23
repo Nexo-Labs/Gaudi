@@ -8,7 +8,7 @@ export async function upsertProduct(product: Stripe.Product | Stripe.DeletedProd
     console.warn(`Product ${product.id} not found in stripe request, please fix it`);
   }
   if ('deleted' in product && product.deleted) {
-    stripe.products.del(product.id);
+    await stripe.products.del(product.id);
     return;
   }
 
@@ -21,14 +21,18 @@ export async function upsertProduct(product: Stripe.Product | Stripe.DeletedProd
     type: product.type,
     created: product.created,
     updated: product.updated,
-    url: product.url || null
-  }
+    url: product.url,
+    images: product.images,
+    livemode: product.livemode,
+    marketingFeatures: product.metadata.marketing_features,
+    packageDimensions: product.package_dimensions,
+    shippable: product.shippable,
+    statementDescriptor: product.statement_descriptor
+  };
 
   await prismaClient.stripeProduct.upsert({
     where: { id: product.id },
-    update: {
-      ...productData
-    },
+    update: productData,
     create: {
       id: product.id,
       ...productData

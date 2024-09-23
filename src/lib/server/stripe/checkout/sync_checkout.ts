@@ -25,12 +25,6 @@ export async function syncCheckout(checkout: Stripe.Checkout.Session) {
 
   await upsertCustomer(customer, userId);
   await upsertStripeCheckout(checkout);
-  await Promise.all(
-    lineItems.data
-      .mapNotNull((lineItem) => lineItem?.price?.product)
-      .map((product) => upsertProduct(product)
-    )
-  );
   await Promise.all(lineItems.data.mapNotNull((lineItem) => upsertLineItem(lineItem, checkout.id)));
 
   if (checkout.mode == 'subscription') {

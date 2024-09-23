@@ -3,25 +3,25 @@ import type { UserModel } from "$src/lib/domain/user-model.js";
 import type Stripe from "stripe";
 import { stripe } from "../stripe_service.js";
 
-export async function createCheckout(
+export async function createSubscriptionCheckout(
 	url: URL,
 	user: UserModel,
-	price: Stripe.Price,
+	priceId: string,
 	quantity = 1
 ): Promise<Stripe.Checkout.Session> {
-	const subscription_data = {
-		metadata: { user_id: user.userId }
-	};
-
-	const recurring = price.type == 'recurring';
-
 	return await stripe.checkout.sessions.create({
 		success_url: `${url.origin}${relativeUrls.subscriptions.list}`,
 		cancel_url: `${url.origin}${relativeUrls.subscriptions.list}`,
-		mode: recurring ? 'subscription' : 'payment',
+		mode: 'subscription',
 		customer_email: user.email,
 		client_reference_id: user.userId,
-		line_items: [{ price: price.id, quantity }],
-		...(recurring ? { subscription_data } : {})
+		line_items: [{ price: priceId, quantity }],
+		metadata: { user_id: user.userId },
+		tax_id_collection: {
+			enabled: true
+   	    },
+		subscription_data: {
+			metadata: { user_id: user.userId }
+		}
 	});
 }

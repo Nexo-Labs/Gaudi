@@ -14,16 +14,12 @@ export const POST = async ({ request }) => {
 		const event = stripe.webhooks.constructEvent(body, signature, whSecret);
 
 		switch (event.type) {
-			case 'checkout.session.completed':
-				await syncCheckout(event.data.object)
-				break
-			case 'customer.subscription.created':
-			case 'customer.subscription.updated':
-			case 'customer.subscription.deleted':
-			case 'customer.subscription.trial_will_end':
-			case 'customer.subscription.paused':
-				await syncSubscription(event.data.object.id)
-				break
+			case 'checkout.session.completed': await syncCheckout(event.data.object); break
+			case 'customer.subscription.created': await syncSubscription(event.data.object.id); break
+			case 'customer.subscription.updated': await syncSubscription(event.data.object.id); break
+			case 'customer.subscription.deleted': await syncSubscription(event.data.object.id); break
+			case 'customer.subscription.trial_will_end': await syncSubscription(event.data.object.id); break
+			case 'customer.subscription.paused': await syncSubscription(event.data.object.id); break
 		}
 	} catch (err) {
 		console.log('Something went wrong.', err);

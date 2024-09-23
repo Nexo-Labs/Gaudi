@@ -1,6 +1,5 @@
 import type Stripe from "stripe";
 import { prismaClient } from "./prisma_client.js";
-import { stripe } from "../stripe/stripe_service.js";
 
 export async function upsertCustomer(customer: Stripe.Customer | Stripe.DeletedCustomer, userId: string) {
   if ('deleted' in customer && customer.deleted) {
@@ -19,19 +18,15 @@ export async function upsertCustomer(customer: Stripe.Customer | Stripe.DeletedC
     taxExempt: customer.tax_exempt,
     balance: customer.balance,
     description: customer.description,
-    created: customer.created || Math.floor(Date.now() / 1000)
+    created: customer.created || Math.floor(Date.now() / 1000),
+    user: { connect: { id: userId } }
   };
   await prismaClient.stripeCustomer.upsert({
     where: { id: customer.id },
-    update: {
-      ...customerData
-    },
+    update: customerData,
     create: {
       id: customer.id,
       ...customerData,
-      user: {
-        connect: { id: userId }
-      }
     }
   });
 }

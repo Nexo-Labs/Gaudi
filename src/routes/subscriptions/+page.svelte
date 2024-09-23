@@ -34,7 +34,7 @@
 							{#if subscriptionByPrice.canceled?.isCanceled == false}
 								<NavButton
 									text="Cancelar"
-									href={relativeUrls.subscriptions.updateSuscription(
+									href={relativeUrls.subscriptions.updateSubscription(
 										subscriptionByPrice.subscriptionId,
 										true
 									)}
@@ -42,7 +42,7 @@
 							{:else}
 								<NavButton
 									text="Resuscribirse"
-									href={relativeUrls.subscriptions.updateSuscription(
+									href={relativeUrls.subscriptions.updateSubscription(
 										subscriptionByPrice.subscriptionId,
 										false
 									)}

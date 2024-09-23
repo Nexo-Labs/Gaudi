@@ -1,4 +1,7 @@
 -- CreateEnum
+CREATE TYPE "StripeProductType" AS ENUM ('service', 'good');
+
+-- CreateEnum
 CREATE TYPE "StripeSubscriptionStatus" AS ENUM ('INCOMPLETE', 'INCOMPLETE_EXPIRED', 'TRIALING', 'ACTIVE', 'PAST_DUE', 'CANCELED', 'UNPAID');
 
 -- CreateTable
@@ -40,9 +43,6 @@ CREATE TABLE "User" (
     "stripeRoles" TEXT[],
     "locales" TEXT[],
     "customerId" TEXT,
-    "subscriptionId" TEXT,
-    "subscriptionStatus" "StripeSubscriptionStatus",
-    "priceId" TEXT,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
@@ -69,10 +69,34 @@ CREATE TABLE "StripeCustomer" (
 -- CreateTable
 CREATE TABLE "StripeSubscription" (
     "id" TEXT NOT NULL,
-    "subscriptionStatus" "StripeSubscriptionStatus" NOT NULL,
+    "startDate" INTEGER NOT NULL,
+    "endedAt" INTEGER,
+    "currentPeriodEnd" INTEGER NOT NULL,
+    "currentPeriodStart" INTEGER NOT NULL,
+    "canceledAt" INTEGER,
+    "invoiceId" TEXT,
+    "description" TEXT,
+    "trialStart" INTEGER,
+    "trialEnd" INTEGER,
+    "currency" TEXT NOT NULL,
+    "status" "StripeSubscriptionStatus" NOT NULL,
+    "discounts" JSONB,
+    "discount" JSONB,
     "customerId" TEXT NOT NULL,
 
     CONSTRAINT "StripeSubscription_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "StripeSubscriptionItem" (
+    "id" TEXT NOT NULL,
+    "quantity" INTEGER,
+    "created" INTEGER NOT NULL,
+    "discounts" JSONB,
+    "subscriptionId" TEXT NOT NULL,
+    "priceId" TEXT NOT NULL,
+
+    CONSTRAINT "StripeSubscriptionItem_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -115,11 +139,17 @@ CREATE TABLE "StripeProduct" (
     "name" TEXT NOT NULL,
     "description" TEXT,
     "taxCode" TEXT,
-    "type" TEXT NOT NULL,
+    "type" "StripeProductType" NOT NULL,
     "created" INTEGER NOT NULL,
     "updated" INTEGER NOT NULL,
     "unitLabel" TEXT,
     "url" TEXT,
+    "images" TEXT[],
+    "livemode" BOOLEAN NOT NULL,
+    "marketingFeatures" JSONB,
+    "packageDimensions" JSONB,
+    "shippable" BOOLEAN,
+    "statementDescriptor" TEXT,
 
     CONSTRAINT "StripeProduct_pkey" PRIMARY KEY ("id")
 );
@@ -135,7 +165,8 @@ CREATE TABLE "StripeLineItem" (
     "description" TEXT NOT NULL,
     "priceId" TEXT NOT NULL,
     "checkoutSessionId" TEXT NOT NULL,
-    "productId" TEXT NOT NULL,
+    "taxes" JSONB,
+    "discounts" JSONB,
 
     CONSTRAINT "StripeLineItem_pkey" PRIMARY KEY ("id")
 );
@@ -148,6 +179,7 @@ CREATE TABLE "StripePrice" (
     "billingScheme" TEXT NOT NULL,
     "created" INTEGER NOT NULL,
     "liveMode" BOOLEAN NOT NULL,
+    "productId" TEXT NOT NULL,
 
     CONSTRAINT "StripePrice_pkey" PRIMARY KEY ("id")
 );
@@ -193,6 +225,12 @@ ALTER TABLE "StripeCustomer" ADD CONSTRAINT "StripeCustomer_userId_fkey" FOREIGN
 ALTER TABLE "StripeSubscription" ADD CONSTRAINT "StripeSubscription_customerId_fkey" FOREIGN KEY ("customerId") REFERENCES "StripeCustomer"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "StripeSubscriptionItem" ADD CONSTRAINT "StripeSubscriptionItem_subscriptionId_fkey" FOREIGN KEY ("subscriptionId") REFERENCES "StripeSubscription"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "StripeSubscriptionItem" ADD CONSTRAINT "StripeSubscriptionItem_priceId_fkey" FOREIGN KEY ("priceId") REFERENCES "StripePrice"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "StripeCheckoutSession" ADD CONSTRAINT "StripeCheckoutSession_customerId_fkey" FOREIGN KEY ("customerId") REFERENCES "StripeCustomer"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
@@ -202,4 +240,4 @@ ALTER TABLE "StripeLineItem" ADD CONSTRAINT "StripeLineItem_priceId_fkey" FOREIG
 ALTER TABLE "StripeLineItem" ADD CONSTRAINT "StripeLineItem_checkoutSessionId_fkey" FOREIGN KEY ("checkoutSessionId") REFERENCES "StripeCheckoutSession"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "StripeLineItem" ADD CONSTRAINT "StripeLineItem_productId_fkey" FOREIGN KEY ("productId") REFERENCES "StripeProduct"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "StripePrice" ADD CONSTRAINT "StripePrice_productId_fkey" FOREIGN KEY ("productId") REFERENCES "StripeProduct"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
