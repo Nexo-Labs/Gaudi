@@ -1,5 +1,5 @@
 <script lang="ts">
-	import logo from '../assets/svgs/logo.svg';
+	import logo from '../assets/svgs/signature.svg';
 
 	export let homeUrl: string = '/';
 </script>
