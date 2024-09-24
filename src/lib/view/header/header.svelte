@@ -1,7 +1,7 @@
 <script lang="ts">
 	import '../tailwind.css';
 	import ContentWrapper from '$src/lib/view/common/content_wrapper.svelte';
-	import Logo from './logo.svelte';
+	import Logo from './signature_logo.svelte';
 	import NavItem from './nav_item.svelte';
 	import HamburgerMenu from './hamburguer_menu.svelte';
 	import LoginButton from './login_button.svelte';
