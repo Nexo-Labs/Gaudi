@@ -25,9 +25,9 @@ COPY --from=build /app/build build
 COPY --from=build /app/prisma prisma
 COPY --from=build /app/node_modules/ node_modules/
 COPY --from=build /app/static static
-COPY --from=build /app/scripts/entrypoint.sh scripts/entrypoint.sh
-RUN chmod +x /app/scripts/entrypoint.sh
+COPY --from=build /app/scripts/docker_entrypoint.sh scripts/docker_entrypoint.sh
+RUN chmod +x /app/scripts/docker_entrypoint.sh
 
 
-ENTRYPOINT [ "/app/scripts/entrypoint.sh" ]
+ENTRYPOINT [ "/app/scripts/docker_entrypoint.sh" ]
 CMD ["sh", "-c", "node --env-file=/app/.env build"]
