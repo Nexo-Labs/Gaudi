@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/svelte';
-import NavButton from '$lib/view/common/NavButton.svelte';
+import EscotaButton from '$lib/view/common/escota_button.svelte';
 
 const meta = {
-	title: 'Escohotado/Atoms/NavButton',
-	component: NavButton,
+	title: 'Escohotado/Atoms/EscotaButton',
+	component: EscotaButton,
 	tags: ['autodocs']
-} satisfies Meta<NavButton>;
+} satisfies Meta<EscotaButton>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -21,5 +21,12 @@ export const Secondary: Story = {
 	args: {
 		text: 'Descubre al maestro',
 		variant: 'secondary'
+	}
+};
+
+export const Transparent: Story = {
+	args: {
+		text: 'Descubre al maestro',
+		variant: 'transparent'
 	}
 };

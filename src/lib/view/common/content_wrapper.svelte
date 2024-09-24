@@ -4,7 +4,7 @@
 </script>
 
 <div class="w-full h-full {backgroundClassname}">
-	<div class="mx-auto max-w-screen-lg {classname}">
+	<div class="mx-auto max-w-screen-xl {classname}">
 		<slot></slot>
 	</div>
 </div>

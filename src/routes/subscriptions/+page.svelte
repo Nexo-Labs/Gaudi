@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { notNull } from '$src/lib/domain/common/optional_helpers.js';
 	import { relativeUrls } from '$src/lib/domain/routing.js';
-	import NavButton from '$src/lib/view/common/NavButton.svelte';
+	import EscotaButton from '$src/lib/view/common/escota_button.svelte';
 	import type { PageData } from './$types.js';
 
 	export let data: PageData;
@@ -14,7 +14,6 @@
 		<section>
 			<h2 class="text-xl font-bold">{product.name}</h2>
 
-			<!-- Contenedor de precios en una fila -->
 			<div class="flex flex-wrap gap-6">
 				{#each product.prices as price}
 					{@const subscriptionByPrice = data.currentSubscriptions.find(
@@ -32,21 +31,17 @@
 
 						{#if subscriptionByPrice}
 							{#if subscriptionByPrice.canceled?.isCanceled == false}
-								<NavButton
-									text="Cancelar"
-									href={relativeUrls.subscriptions.updateSubscription(
-										subscriptionByPrice.subscriptionId,
-										true
-									)}
-								/>
+								<a href={relativeUrls.subscriptions.updateSubscription(
+									subscriptionByPrice.subscriptionId, true)
+								}>
+									<EscotaButton text="Cancelar"/>
+								</a>
 							{:else}
-								<NavButton
-									text="Resuscribirse"
-									href={relativeUrls.subscriptions.updateSubscription(
-										subscriptionByPrice.subscriptionId,
-										false
-									)}
-								/>
+								<a href={relativeUrls.subscriptions.updateSubscription(
+									subscriptionByPrice.subscriptionId, false)
+								}>
+									<EscotaButton text="Resuscribirse"/>
+								</a>
 								{@const canceledDate = notNull(
 									subscriptionByPrice.canceled?.cancelAt,
 									cancelAt => new Date(cancelAt * 1000)
@@ -56,14 +51,16 @@
 								{/if}
 							{/if}
 						{:else if data.currentSubscriptions.length}
-							<NavButton
-								text="Cambiar"
-								href={relativeUrls.subscriptions.portalUpdateSubscription(
-									data.currentSubscriptions[0].subscriptionId
-								)}
-							/>
+							<a href={relativeUrls.subscriptions.portalUpdateSubscription(
+								data.currentSubscriptions[0].subscriptionId
+							)}>
+								<EscotaButton text="Cambiar"/>
+							</a>
+
 						{:else}
-							<NavButton text="Suscribirse" href={relativeUrls.subscriptions.checkout(price.id)} />
+							<a href={relativeUrls.subscriptions.checkout(price.id)}>
+								<EscotaButton text="Suscribirse"/>
+							</a>
 						{/if}
 					</div>
 				{/each}
@@ -71,6 +68,8 @@
 		</section>
 	{/each}
 	{#if data.currentSubscriptions.length}
-		<NavButton text="Ir a Stripe" href={relativeUrls.subscriptions.portal} />
+		<a href={relativeUrls.subscriptions.portal}>
+			<EscotaButton text="Ir a Stripe"/>
+		</a>
 	{/if}
 </div>

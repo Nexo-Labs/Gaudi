@@ -1,12 +1,12 @@
 <script lang="ts">
 	import '../tailwind.css';
 
-	import NavButton from '$lib/view/common/NavButton.svelte';
-	import ContentWrapper from '$lib/view/common/ContentWrapper.svelte';
+	import ContentWrapper from '$src/lib/view/common/content_wrapper.svelte';
 	import escohotadoFumandoImg from '../assets/img/escohotado-fumando.png';
+	import EscotaButton from '../common/escota_button.svelte';
 </script>
 
-<ContentWrapper classname="w-full h-96 relative" backgroundClassname="bg-generic-main">
+<ContentWrapper classname="w-full h-96 relative" backgroundClassname="bg-white">
 	<img
 		class="absolute right-0 h-full object-cover fade-in"
 		src={escohotadoFumandoImg}
@@ -21,7 +21,9 @@
 				Filósofo y ensayista español, dedicó su vida a explorar y desafiar las convenciones
 				sociales.
 			</p>
-			<NavButton text="Descubre su legado" variant="secondary" noBreak={true} />
+			<a href="/">
+				<EscotaButton text="Descubre su legado" variant="secondary"/>
+			</a>
 		</div>
 	</div>
 </ContentWrapper>

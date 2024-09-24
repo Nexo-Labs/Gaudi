@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/svelte';
-import Header from '$lib/view/header/Header.svelte';
+import Header from '$src/lib/view/header/header.svelte';
 import { mockUser } from '../mockData/user.model.js';
 import { mobileParameters } from '../storybook.js';
 

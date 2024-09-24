@@ -7,9 +7,9 @@ export default {
 			colors: {
 				'generic-main': '#D9D9D2',
 				'generic-secondary': '#B6B7A3',
-				'generic-bg-light': '#F7F2EF',
 				'generic-bg-dark': '#222222',
 				'title-primary': '#0E2F41',
+				'menu-section-title': '#939393',
 				'text-primary': '#333333'
 			},
 			fontFamily: {

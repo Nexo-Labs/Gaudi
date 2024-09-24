@@ -1,5 +1,5 @@
 <script lang="ts">
-	import MainSection from '$lib/view/main-section/MainSection.svelte';
+	import MainSection from '$src/lib/view/main-section/main_section.svelte';
 	import type { LayoutServerData } from './$types.js';
 
 	export let data: LayoutServerData;

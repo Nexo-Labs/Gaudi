@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/svelte';
-import MainSection from '$lib/view/main-section/MainSection.svelte';
+import MainSection from '$src/lib/view/main-section/main_section.svelte';
 import { mobileParameters } from '../storybook.js';
 
 const meta = {
