@@ -21,6 +21,13 @@ export async function upsertCustomer(customer: Stripe.Customer | Stripe.DeletedC
     created: customer.created || Math.floor(Date.now() / 1000),
     user: { connect: { id: userId } }
   };
+  const customerDatabase = await prismaClient.stripeCustomer.findFirst({ where: { userId } })
+
+  if (customerDatabase && customerDatabase.id != customer.id) {
+    await prismaClient.stripeCustomer.delete({
+      where: { id: customerDatabase.id }
+    });
+  }
   await prismaClient.stripeCustomer.upsert({
     where: { id: customer.id },
     update: customerData,
