@@ -48,14 +48,13 @@ model User {
   stripeRoles       String[]
   locales           String[]
 
-  customerId         String?
   customer           StripeCustomer?
 }
 
 model StripeCustomer {
   id            String  @id @default(cuid())
   userId        String  @unique
-  user          User    @relation(fields: [userId], references: [id])
+  user          User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   currency      String?
   delinquent    Boolean?
   name          String?
@@ -90,7 +89,7 @@ model StripeSubscription {
   discount              Json?
   subscriptionItems     StripeSubscriptionItem[]
   customerId            String  @unique
-  customer              StripeCustomer @relation(fields: [customerId], references: [id])
+  customer              StripeCustomer @relation(fields: [customerId], references: [id], onDelete: Cascade)
 }
 
 model StripeSubscriptionItem {
@@ -176,7 +175,7 @@ model StripeLineItem {
   description           String
 
   priceId               String
-  price                 StripePrice @relation(fields: [priceId], references: [id])
+  price                 StripePrice @relation(fields: [priceId], references: [id], onDelete: Cascade)
   checkoutSessionId     String
   checkoutSession       StripeCheckoutSession @relation(fields: [checkoutSessionId], references: [id], onDelete: Cascade)
 
@@ -195,7 +194,7 @@ model StripePrice {
     subscriptionItem      StripeSubscriptionItem[]
 
     productId             String
-    product               StripeProduct @relation(fields: [productId], references: [id])  
+    product               StripeProduct @relation(fields: [productId], references: [id], onDelete: Cascade)  
 
 }
 
