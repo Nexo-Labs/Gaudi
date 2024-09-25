@@ -2,13 +2,17 @@ import { stripe } from "../stripe_service.js"
 import { error } from "@sveltejs/kit"
 import { upsertSubscription } from "../../prisma/upsert_stripe_subscription_prisma.js"
 import { prismaClient } from "../../prisma/prisma_client.js"
+import { getActiveSubscriptionsByUser } from "../../prisma/get_active_subscriptions_by_user.js";
+import { saveSubscritionsToUser } from "../../prisma/save_subscritions_to_user.js";
 
 export async function syncSubscription(subscriptionId: string) {
-    const subscription = await stripe.subscriptions.retrieve(subscriptionId, {expand: ['items.data.price.product', 'customer']})
+    const subscription = await stripe.subscriptions.retrieve(subscriptionId, { expand: ['items.data.price.product', 'customer'] })
     const user = await prismaClient.user.findFirst({ where: { id: subscription.metadata.user_id } })
-    
-    if(!user) error(404, `Missing user metadata for subscription '${subscription.id}'`)
+
+    if (!user) error(404, `Missing user metadata for subscription '${subscription.id}'`)
 
     await upsertSubscription(subscription)
+    await saveSubscritionsToUser(user.id, 
+        await getActiveSubscriptionsByUser(user.id)
+    );
 }
-

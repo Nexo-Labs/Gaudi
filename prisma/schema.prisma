@@ -158,7 +158,7 @@ model StripeProduct {
   shippable            Boolean?
   statementDescriptor  String?
 
-  prices        StripePrice[]
+  prices               StripePrice[]
 }
 
 enum StripeProductType {
