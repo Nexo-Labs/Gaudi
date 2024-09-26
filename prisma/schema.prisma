@@ -79,6 +79,7 @@ model StripeSubscription {
   currentPeriodEnd      Int
   currentPeriodStart    Int
   canceledAt            Int?
+  cancelAtPeriodEnd     Boolean
   invoiceId             String?
   description           String?
   trialStart            Int?

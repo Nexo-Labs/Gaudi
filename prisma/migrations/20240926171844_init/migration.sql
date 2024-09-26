@@ -73,6 +73,7 @@ CREATE TABLE "StripeSubscription" (
     "currentPeriodEnd" INTEGER NOT NULL,
     "currentPeriodStart" INTEGER NOT NULL,
     "canceledAt" INTEGER,
+    "cancelAtPeriodEnd" BOOLEAN NOT NULL,
     "invoiceId" TEXT,
     "description" TEXT,
     "trialStart" INTEGER,

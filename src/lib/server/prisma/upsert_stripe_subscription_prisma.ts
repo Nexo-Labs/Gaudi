@@ -15,6 +15,7 @@ export async function upsertSubscription(subscription: Stripe.Subscription): Pro
         currentPeriodEnd: subscription.current_period_end,
         currentPeriodStart: subscription.current_period_start,
         canceledAt: subscription.canceled_at,
+        cancelAtPeriodEnd: subscription.cancel_at_period_end,
         invoiceId: subscription.latest_invoice,
         description: subscription.description,
         trialStart: subscription.trial_start,
