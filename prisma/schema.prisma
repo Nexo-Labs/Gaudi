@@ -193,6 +193,19 @@ model StripePrice {
     lineItems             StripeLineItem[]
     subscriptionItem      StripeSubscriptionItem[]
 
+    currency              String
+    unitAmount            Int?
+    unitAmountDecimal     String?
+    recurring             Json?
+    metadata              Json
+    nickname              String?
+    type                  String
+    currencyOptions       Json?
+    taxBehavior           String?
+    tiers                 Json?
+    tiersMode             Json?
+    transformQuantity     Json?
+
     productId             String
     product               StripeProduct @relation(fields: [productId], references: [id], onDelete: Cascade)  
 

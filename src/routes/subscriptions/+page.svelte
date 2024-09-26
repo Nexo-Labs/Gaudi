@@ -25,7 +25,7 @@
 					<div class="bg-white shadow-lg p-4 rounded-md w-full sm:w-auto flex-shrink-0">
 						<h3 class="text-lg font-semibold">{price.recurring?.interval}</h3>
 						<p class="text-sm">
-							Price: {((price.unit_amount || 0) / 100).toLocaleString('es-ES', {
+							Price: {((price.unitAmount || 0) / 100).toLocaleString('es-ES', {
 								style: 'currency',
 								currency: 'eur'
 							})}

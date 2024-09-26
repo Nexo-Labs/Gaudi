@@ -1,5 +1,6 @@
 import type Stripe from "stripe";
 import { stripe } from "../stripe_service.js";
+
 export type ProductWithPrices = Stripe.Product & {
 	prices: Stripe.Price[];
 };

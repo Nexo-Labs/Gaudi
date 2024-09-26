@@ -178,6 +178,18 @@ CREATE TABLE "StripePrice" (
     "billingScheme" TEXT NOT NULL,
     "created" INTEGER NOT NULL,
     "liveMode" BOOLEAN NOT NULL,
+    "currency" TEXT NOT NULL,
+    "unitAmount" INTEGER,
+    "unitAmountDecimal" TEXT,
+    "recurring" JSONB,
+    "metadata" JSONB NOT NULL,
+    "nickname" TEXT,
+    "type" TEXT NOT NULL,
+    "currencyOptions" JSONB,
+    "taxBehavior" TEXT,
+    "tiers" JSONB,
+    "tiersMode" JSONB,
+    "transformQuantity" JSONB,
     "productId" TEXT NOT NULL,
 
     CONSTRAINT "StripePrice_pkey" PRIMARY KEY ("id")

@@ -2,7 +2,7 @@ import type Stripe from "stripe";
 import { prismaClient } from "./prisma_client.js";
 import { upsertSubscriptionItem } from "./upsert_stripe_subscription_item_prisma.js";
 import { upsertCustomer } from "./upsert_stripe_customer_prisma.js";
-import { subscriptionStatus } from "$src/lib/domain/user-model.js"
+import { subscriptionStatus } from '$src/lib/domain/prisma-enum-mapping.js';
 
 export async function upsertSubscription(subscription: Stripe.Subscription): Promise<void> {
     const customer = subscription.customer as Stripe.Customer
@@ -41,7 +41,6 @@ export async function upsertSubscription(subscription: Stripe.Subscription): Pro
           .map((item) => upsertSubscriptionItem(item)
         )
     );
-
   }
   
   

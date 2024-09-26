@@ -1,4 +1,5 @@
-import { stripe } from './lib/server/stripe/stripe_service.js';
+import { getActiveProducts } from './lib/server/prisma/get_active_products.js';
+import { syncProducts } from './lib/server/stripe/products/sync_products.js';
 
-const temp = await stripe.subscriptions.list()
-console.log(temp.data)
+await syncProducts();
+
