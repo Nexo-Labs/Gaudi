@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/svelte';
-import HeaderSubMenu from '$src/lib/view/header/header_submenu.svelte';
+import HeaderSubMenu from '$src/lib/view/header/header_submenu/header_submenu.svelte';
 import { mockAdminUser } from '../mockData/user.model.js';
 import { mobileParameters } from '../storybook.js';
 

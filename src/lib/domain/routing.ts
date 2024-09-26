@@ -12,5 +12,12 @@ export const relativeUrls = {
 		portalUpdateSubscription: (subsriptionId: string): string =>
 			`/subscriptions/portal?updateSubscriptionId=${subsriptionId}`,
 		portal: '/subscriptions/portal'
+	},
+	admin: {
+		users: '/admin/users',
+		content: '/admin/content'
+	},
+	user: {
+		profile: '/user/account'
 	}
 };

@@ -3,6 +3,7 @@
 	import { relativeUrls } from '$src/lib/domain/routing.js';
 	import ContentWrapper from '$src/lib/view/common/content_wrapper.svelte';
 	import EscotaButton from '$src/lib/view/common/escota_button.svelte';
+	import H3 from '$src/lib/view/common/headers/h3.svelte';
 	import type { PageData } from './$types.js';
 
 	export let data: PageData;
@@ -10,7 +11,7 @@
 
 
 <ContentWrapper classname="space-y-6" backgroundClassname="bg-white">
-	<h1>Pricing</h1>
+	<H3>Pricing</H3>
 
 	{#each data.products as product}
 		<section>
