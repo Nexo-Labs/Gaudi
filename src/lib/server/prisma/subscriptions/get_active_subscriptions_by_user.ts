@@ -1,5 +1,5 @@
 import type { Prisma } from "@prisma/client";
-import { prismaClient } from "./prisma_client.js";
+import { prismaClient } from "../prisma_client.js";
 
 export type ActiveProductIdsByUser = Prisma.StripeSubscriptionItemGetPayload<{
     select: {

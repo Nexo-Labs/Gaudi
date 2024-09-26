@@ -1,5 +1,5 @@
 import type Stripe from "stripe";
-import { prismaClient } from "./prisma_client.js";
+import { prismaClient } from "../prisma_client.js";
 import { notNullAsync } from "$src/lib/domain/common/optional_helpers.js";
 import { upsertPrice } from "./upsert_stripe_price_prisma.js";
 

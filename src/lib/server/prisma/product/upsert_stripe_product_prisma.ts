@@ -1,6 +1,6 @@
 import type Stripe from "stripe";
-import { prismaClient } from "./prisma_client.js";
-import { stripe } from "../stripe/stripe_service.js";
+import { prismaClient } from "../prisma_client.js";
+import { stripe } from "../../stripe/stripe_service.js";
 
 export async function upsertProduct(product: Stripe.Product | Stripe.DeletedProduct | string) {
   if (typeof product === 'string') {

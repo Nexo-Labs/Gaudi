@@ -1,8 +1,8 @@
 import { relativeUrls } from '$src/lib/domain/routing.js';
 import { restrictAuth } from '$src/lib/server/auth.service.js';
+import { updateSubscriptionCanceledAtPeriodEnd } from '$src/lib/server/prisma/subscriptions/update_subscription_canceled_at_period_end.js';
 import { updateSubscription } from '$src/lib/server/stripe/subscriptions/update_subscription.js';
 import { error, redirect } from '@sveltejs/kit';
-import { updateSubscriptionCanceledAtPeriodEnd } from '$lib/server/prisma/update_subscription_canceled_at_period_end.js';
 
 export const GET = async ({ locals, url }) => {
 	await restrictAuth(locals);

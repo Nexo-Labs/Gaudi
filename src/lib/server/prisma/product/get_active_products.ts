@@ -1,5 +1,5 @@
 import type { Prisma } from "@prisma/client";
-import { prismaClient } from "./prisma_client.js";
+import { prismaClient } from "../prisma_client.js";
 import type { ProductType } from "$src/lib/domain/prisma-enum-mapping.js";
 import type { Stripe } from "stripe";
 

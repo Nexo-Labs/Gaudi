@@ -1,7 +1,7 @@
 import type { UserModel } from "$src/lib/domain/user-model.js";
 import type { Prisma } from "@prisma/client";
-import { prismaClient } from "./prisma_client.js";
-import { stripe } from "../stripe/stripe_service.js";
+import { prismaClient } from "../prisma_client.js";
+import { stripe } from "../../stripe/stripe_service.js";
 
 type SubscriptionCanceled = {
 	isCanceled: boolean;

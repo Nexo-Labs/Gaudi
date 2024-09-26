@@ -1,7 +1,7 @@
 import type Stripe from "stripe";
-import { prismaClient } from "./prisma_client.js";
+import { prismaClient } from "../prisma_client.js";
 import { upsertSubscriptionItem } from "./upsert_stripe_subscription_item_prisma.js";
-import { upsertCustomer } from "./upsert_stripe_customer_prisma.js";
+import { upsertCustomer } from "../user/upsert_stripe_customer_prisma.js";
 import { subscriptionStatus } from '$src/lib/domain/prisma-enum-mapping.js';
 
 export async function upsertSubscription(subscription: Stripe.Subscription): Promise<void> {

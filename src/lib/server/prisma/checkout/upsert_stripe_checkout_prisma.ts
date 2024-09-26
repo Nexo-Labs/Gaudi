@@ -1,5 +1,5 @@
 import type Stripe from "stripe";
-import { prismaClient } from "./prisma_client.js";
+import { prismaClient } from "../prisma_client.js";
 import { error } from "@sveltejs/kit";
 
 export async function upsertStripeCheckout(checkout: Stripe.Checkout.Session): Promise<void> {

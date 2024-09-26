@@ -1,5 +1,5 @@
 import type Stripe from "stripe";
-import { prismaClient } from "./prisma_client.js";
+import { prismaClient } from "../prisma_client.js";
 
 export async function upsertCustomer(customer: Stripe.Customer | Stripe.DeletedCustomer, userId: string) {
   if ('deleted' in customer && customer.deleted) {

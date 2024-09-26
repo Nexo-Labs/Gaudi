@@ -1,6 +1,6 @@
 import type Stripe from "stripe";
-import { upsertPrice } from "./upsert_stripe_price_prisma.js";
-import { prismaClient } from "./prisma_client.js";
+import { upsertPrice } from "../price/upsert_stripe_price_prisma.js";
+import { prismaClient } from "../prisma_client.js";
 
 export async function upsertSubscriptionItem(item: Stripe.SubscriptionItem): Promise<void> {
     const lineItemData = {
