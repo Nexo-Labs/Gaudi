@@ -1,15 +1,17 @@
 <script lang="ts">
 	import { notNull } from '$src/lib/domain/common/optional_helpers.js';
 	import { relativeUrls } from '$src/lib/domain/routing.js';
+	import ContentWrapper from '$src/lib/view/common/content_wrapper.svelte';
 	import EscotaButton from '$src/lib/view/common/escota_button.svelte';
 	import type { PageData } from './$types.js';
 
 	export let data: PageData;
 </script>
 
-<h1>Pricing</h1>
 
-<div class="space-y-6">
+<ContentWrapper classname="space-y-6" backgroundClassname="bg-white">
+	<h1>Pricing</h1>
+
 	{#each data.products as product}
 		<section>
 			<h2 class="text-xl font-bold">{product.name}</h2>
@@ -72,4 +74,4 @@
 			<EscotaButton text="Ir a Stripe"/>
 		</a>
 	{/if}
-</div>
+</ContentWrapper>

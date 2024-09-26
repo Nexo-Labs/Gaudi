@@ -23,7 +23,7 @@
 
 <header>
 	<ContentWrapper>
-		<nav class="h-20 px-7 py-5 bg-white flex justify-between items-center">
+		<nav class="h-20 py-5 bg-white flex justify-between items-center">
 			<Logo />
 			<HamburgerMenu on:toggleMenu={toggleMenu} />
 			<div class="hidden lg:flex justify-end items-center lg:gap-4 xl:gap-6 xxl:gap-6 flex-shrink-0">

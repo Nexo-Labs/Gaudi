@@ -3,7 +3,7 @@
 	export let backgroundClassname: string = '';
 </script>
 
-<div class="w-full h-full {backgroundClassname}">
+<div class="w-full h-full px-6 {backgroundClassname}">
 	<div class="mx-auto max-w-screen-xl {classname}">
 		<slot></slot>
 	</div>
