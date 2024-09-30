@@ -1,16 +1,17 @@
-import type { ContentCMSId, ContentCMSLocalized, ContentCMSPermissions } from "./content-cms.js";
+import type { ContentCMS, ContentCMSLocalized, ContentCMSPermissions } from "./content-cms.js";
+import { generateMockImageFileContentCMS, type FileContentCMS } from "./file-content-cms.js";
 
-type VideoContentCMS = (
+export type VideoContentCMS = (
     | { youtube: VideoContentLinkCMS; vimeo?: VideoContentLinkCMS }
     | { vimeo: VideoContentLinkCMS; youtube?: VideoContentLinkCMS }
-) & ContentCMSId
+) & ContentCMS
   & ContentCMSLocalized<VideoContentCMSLocalized>
   & { __typename: 'VideoContentCMS' };
 
 interface VideoContentCMSLocalized {
     title: string;
     description: string;
-    thumbnail: string;
+    thumbnail: FileContentCMS;
 }
 
 interface VideoLinkLocalized {
@@ -21,19 +22,20 @@ interface VideoContentLinkCMS extends ContentCMSPermissions, ContentCMSLocalized
     type: 'youtube' | 'vimeo';
 }
 
-const MOCK: VideoContentCMS = {
-    id: 'id',
+export const videoMock: VideoContentCMS = {
+    id: 'id1',
     __typename: 'VideoContentCMS',
+    seeds: [],
     localized: {
         es: {
             title: 'Hola',
             description: 'Hola',
-            thumbnail: 'Hola'
+            thumbnail: generateMockImageFileContentCMS()
         },
         en: {
             title: 'Hello',
             description: 'Hello',
-            thumbnail: 'Hello'
+            thumbnail: generateMockImageFileContentCMS()
         }
     },
     youtube: {

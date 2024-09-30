@@ -1,10 +1,11 @@
-<script>
+<script lang="ts">
 	import ContentWrapper from '$src/lib/view/common/content_wrapper.svelte';
-	import TiptapEditor from '$src/lib/view/common/tiptap_editor.svelte';
 	import { Tabs, TabItem } from 'flowbite-svelte';
 	import H3 from '$src/lib/view/common/headers/h3.svelte';
-	import ContentTable from '$src/lib/view/admin/content/content-table.svelte';
+	import VideosTable from './views/videos-table.svelte';
+	import type { PageData } from './$types.js';
 
+	export let data: PageData;
 </script>
 
 <svelte:head>
@@ -16,21 +17,17 @@
 <ContentWrapper>
 	<H3>Administración de contenido</H3>
 
-	<Tabs>
+	<Tabs tabStyle="underline">
 		<TabItem open title="Artículos">
-			<ContentTable></ContentTable>
 		</TabItem>
 		<TabItem title="Vídeos">
-			<ContentTable></ContentTable>
+			<VideosTable videos={data.videos.map(videoDB => videoDB.data)}/>
 		</TabItem>
 		<TabItem title="Fotos">
-			<ContentTable></ContentTable>
 		</TabItem>
 		<TabItem title="Libros">
-			<ContentTable></ContentTable>
 		</TabItem>
 		<TabItem title="Citas">
-			<ContentTable></ContentTable>
 		</TabItem>
   	</Tabs> 
 </ContentWrapper>

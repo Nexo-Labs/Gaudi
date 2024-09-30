@@ -4,6 +4,9 @@ CREATE TYPE "StripeProductType" AS ENUM ('service', 'good');
 -- CreateEnum
 CREATE TYPE "StripeSubscriptionStatus" AS ENUM ('INCOMPLETE', 'INCOMPLETE_EXPIRED', 'TRIALING', 'ACTIVE', 'PAST_DUE', 'CANCELED', 'UNPAID');
 
+-- CreateEnum
+CREATE TYPE "ContentCMSType" AS ENUM ('VIDEO', 'ARTICLE', 'BOOK', 'QUOTE', 'PHOTO');
+
 -- CreateTable
 CREATE TABLE "Account" (
     "id" TEXT NOT NULL,
@@ -201,6 +204,19 @@ CREATE TABLE "VerificationToken" (
     "identifier" TEXT NOT NULL,
     "token" TEXT NOT NULL,
     "expires" TIMESTAMP(3) NOT NULL
+);
+
+-- CreateTable
+CREATE TABLE "ContentCMS" (
+    "id" TEXT NOT NULL,
+    "type" "ContentCMSType" NOT NULL,
+    "data" JSONB NOT NULL,
+    "seeds" TEXT[],
+    "permissions" TEXT[],
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "ContentCMS_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex

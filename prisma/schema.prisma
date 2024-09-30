@@ -229,3 +229,21 @@ model VerificationToken {
 
   @@unique([identifier, token])
 }
+
+model ContentCMS {
+  id          String @id @default(cuid())
+  type        ContentCMSType
+  data        Json
+  seeds       String[]
+  permissions String[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+enum ContentCMSType {
+  VIDEO
+  ARTICLE
+  BOOK
+  QUOTE
+  PHOTO
+}
