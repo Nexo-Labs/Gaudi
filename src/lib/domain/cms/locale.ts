@@ -1,6 +1,7 @@
-export type Locale = 'es' | 'en';
+export type Locales = 'es' | 'en';
+
 export const locales: {
-    [k in Locale]: k;
+    [k in Locales]: k;
 } = {
     es: 'es',
     en: 'en'

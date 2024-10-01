@@ -6,8 +6,8 @@ import { videoCmsList } from '$src/lib/server/cms/video/video-cms-list.js';
 export const load: PageServerLoad = async ({ locals }) => {
 	const user = await getUser(locals);
 	if (!user) return redirect(303, '/');
-    const videos = await videoCmsList();
+
 	return {
-		videos
+		videos: await videoCmsList()
 	};
 };

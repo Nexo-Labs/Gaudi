@@ -27,7 +27,8 @@ export const videoMock: VideoContentCMS = {
     __typename: 'VideoContentCMS',
     seeds: [],
     localized: {
-        es: {
+        defaultLocale: 'es',
+        default: {
             title: 'Hola',
             description: 'Hola',
             thumbnail: generateMockImageFileContentCMS()
@@ -42,7 +43,8 @@ export const videoMock: VideoContentCMS = {
         type: 'youtube',
         permissions: ['basic'],
         localized: {
-            es: {
+            defaultLocale: 'es',
+            default: {
                 href: 'href'
             },
             en: {
@@ -54,7 +56,8 @@ export const videoMock: VideoContentCMS = {
         type: 'youtube',
         permissions: ['premium'],
         localized: {
-            es: {
+            defaultLocale: 'es',
+            default: {
                 href: 'href'
             },
             en: {
