@@ -1,6 +1,6 @@
 export type Optional<T> = T | undefined | null;
 
-export function notNull<T, U>(value: Optional<T>, fn: (val: T) => Optional<U>): Optional<U> {
+export function notNull<T, U>(value: Optional<T>, fn: (val: T) => U | undefined): U | undefined {
 	return value != null ? fn(value) : undefined;
 }
 export async function notNullAsync<T, U>(value: Optional<T>, fn: (val: T) => Promise<Optional<U>>): Promise<Optional<U>> {

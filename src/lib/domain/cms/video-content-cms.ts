@@ -22,46 +22,48 @@ interface VideoContentLinkCMS extends ContentCMSPermissions, ContentCMSLocalized
     type: 'youtube' | 'vimeo';
 }
 
-export const videoMock: VideoContentCMS = {
-    id: 'id1',
-    __typename: 'VideoContentCMS',
-    seeds: [],
-    localized: {
-        defaultLocale: 'es',
-        default: {
-            title: 'Hola',
-            description: 'Hola',
-            thumbnail: generateMockImageFileContentCMS()
-        },
-        en: {
-            title: 'Hello',
-            description: 'Hello',
-            thumbnail: generateMockImageFileContentCMS()
-        }
-    },
-    youtube: {
-        type: 'youtube',
-        permissions: ['basic'],
+export function videoMock(id: string): VideoContentCMS {
+    return {
+        id,
+        __typename: 'VideoContentCMS',
+        seeds: [],
         localized: {
             defaultLocale: 'es',
             default: {
-                href: 'href'
+                title: 'Hola',
+                description: 'Hola',
+                thumbnail: generateMockImageFileContentCMS()
             },
             en: {
-                href: 'href'
+                title: 'Hello',
+                description: 'Hello',
+                thumbnail: generateMockImageFileContentCMS()
             }
-        }
-    },
-    vimeo: {
-        type: 'youtube',
-        permissions: ['premium'],
-        localized: {
-            defaultLocale: 'es',
-            default: {
-                href: 'href'
-            },
-            en: {
-                href: 'href'
+        },
+        youtube: {
+            type: 'youtube',
+            permissions: ['basic'],
+            localized: {
+                defaultLocale: 'es',
+                default: {
+                    href: 'href'
+                },
+                en: {
+                    href: 'href'
+                }
+            }
+        },
+        vimeo: {
+            type: 'youtube',
+            permissions: ['premium'],
+            localized: {
+                defaultLocale: 'es',
+                default: {
+                    href: 'href'
+                },
+                en: {
+                    href: 'href'
+                }
             }
         }
     }

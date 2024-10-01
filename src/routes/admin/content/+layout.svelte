@@ -5,6 +5,7 @@
 	import { YoutubeSolid, NewspaperSolid } from 'flowbite-svelte-icons';
 
 	import { page } from '$app/stores';
+	import { relativeUrls } from '$src/lib/domain/routing.js';
 	$: activeUrl = $page.url.pathname;
 </script>
 
@@ -21,12 +22,12 @@
 			<Sidebar {activeUrl}>
 				<SidebarWrapper>
 					<SidebarGroup>
-						<SidebarItem label="Vídeos" href="/admin/content/videos">
+						<SidebarItem label="Vídeos" href={relativeUrls.admin.content.videos}>
 							<svelte:fragment slot="icon">
 								<YoutubeSolid class="w-6 h-6 text-gray-500" />
 							</svelte:fragment>
 						</SidebarItem>
-						<SidebarItem label="Artículos" href="/admin/content/articulos">
+						<SidebarItem label="Artículos" href={relativeUrls.admin.content.articles}>
 							<svelte:fragment slot="icon">
 								<NewspaperSolid class="w-6 h-6 text-gray-500" />
 							</svelte:fragment>
@@ -36,7 +37,6 @@
 			</Sidebar>
 		</div>
 		<div class="lg:col-span-3">
-			
 			<slot />
 		</div>
 	</div>
