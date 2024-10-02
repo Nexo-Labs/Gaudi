@@ -7,17 +7,18 @@
 	import H4 from '$src/lib/view/common/headers/h4.svelte';
 	import type { PageData } from './$types.js';
 	import ToggleButtonGroup from '$src/lib/view/common/toggle_button_group.svelte';
+	import SubscriptionsCard from '$src/lib/view/subscriptions/subscription_card.svelte';
 
 	export let data: PageData;
 	const options = [
 		{ id: 'month', label: 'Pago mensual' },
-		{ id: 'year', label: 'Pago anual', discount: '10%' }
-	]
+		{ id: 'year', label: 'Pago anual', sublabel: 'ahorra 10%' }
+	];
 	let selected: any = options[1];
 </script>
 
 <ContentWrapper
-	classname="space-y-6 gap-2 flex flex-col items-center"
+	classname="space-y-6 gap-2 flex flex-col items-center pt-16"
 	backgroundClassname="bg-white"
 >
 	<H2>Elige tu plan y accede al legado Escohotado.</H2>
@@ -26,30 +27,25 @@
 		También puedes elegir la modalidad de pago que mejor se adapte a ti.
 	</p>
 
-	<ToggleButtonGroup
-		bind:selected
-		options={options}
-	/>
+	<ToggleButtonGroup bind:selected {options} />
 
-	{#if data.productsByInterval[selected.id]}
-		{#each data.productsByInterval[selected.id] as product}
-			<h2 class="text-xl font-bold">{product.name}</h2>
-
-			<div class="flex flex-wrap gap-6">
+	<div class="h-96 justify-start items-start gap-7 inline-flex">
+		{#if data.productsByInterval[selected.id]}
+			{#each data.productsByInterval[selected.id] as product}
 				{#each product.prices as price}
 					{@const subscriptionByPrice = data.currentSubscriptions.find(
 						(item) => item.priceId == price.id
 					)}
-
-					<div class="bg-white shadow-lg p-4 rounded-md w-full sm:w-auto flex-shrink-0">
-						<h3 class="text-lg font-semibold">{price.recurring?.interval}</h3>
-						<p class="text-sm">
-							Precio: {((price.unitAmount || 0) / 100).toLocaleString('es-ES', {
-								style: 'currency',
-								currency: 'EUR'
-							})}
-						</p>
-
+					{@const priceStr = ((price.unitAmount || 0) / 100).toLocaleString('es-ES', {
+						style: 'currency',
+						currency: 'EUR'
+					})}
+					<SubscriptionsCard
+						title={product.name}
+						price={priceStr}
+						features={[]}
+						mainCard={product.id === 'prod_QosHF2l3AS4zOH'}
+					>
 						{#if subscriptionByPrice}
 							{#if subscriptionByPrice.canceled?.isCanceled == false}
 								<a
@@ -90,13 +86,13 @@
 								<EscotaButton text="Suscribirse" />
 							</a>
 						{/if}
-					</div>
+					</SubscriptionsCard>
 				{/each}
-			</div>
-		{/each}
-	{:else}
-		<p>No hay productos disponibles para el intervalo seleccionado.</p>
-	{/if}
+			{/each}
+		{:else}
+			<p>No hay productos disponibles para el intervalo seleccionado.</p>
+		{/if}
+	</div>
 
 	{#if data.currentSubscriptions && data.currentSubscriptions.length}
 		<a href={relativeUrls.subscriptions.portal}>

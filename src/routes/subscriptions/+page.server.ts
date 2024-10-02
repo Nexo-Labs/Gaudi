@@ -6,32 +6,39 @@ import { getSubscriptionsByUser } from '$src/lib/server/prisma/subscriptions/get
 import { getActiveProducts, type ActiveProduct } from '$src/lib/server/prisma/product/get_active_products.js';
 interface ProductsByInterval {
 	[interval: string]: ActiveProduct[];
-  }
-  
+}
+
 export const load: PageServerLoad = async ({ locals }) => {
 	const user = await getUser(locals);
 	if (!user) return redirect(303, '/');
 	const allProducts = await getActiveProducts(stripeProductTypes.service)
 	const productsByInterval: ProductsByInterval = allProducts.reduce((acc: ProductsByInterval, product: ActiveProduct) => {
 		product.prices.forEach((price) => {
-		  const interval = price.recurring?.interval;
-	
-		  if (interval) {
-			if (!acc[interval]) {
-			  acc[interval] = [];
+			const interval = price.recurring?.interval;
+
+			if (interval) {
+				if (!acc[interval]) {
+					acc[interval] = [];
+				}
+
+				acc[interval].push({
+					...product,
+					prices: product.prices.filter(p => p.recurring?.interval === interval),
+				});
 			}
-	
-			acc[interval].push({
-			  ...product,
-			  prices: product.prices.filter(p => p.recurring?.interval === interval),
-			});
-		  }
 		});
-	
+
 		return acc;
-	  }, {});
-		
-	
+	}, {});
+
+	for (const interval in productsByInterval) {
+		productsByInterval[interval].sort((a, b) => {
+			const highestPriceA = Math.max(...a.prices.map(p => p.unitAmount ?? 0));
+			const highestPriceB = Math.max(...b.prices.map(p => p.unitAmount ?? 0));
+			return highestPriceA - highestPriceB;
+		});
+	}
+
 	return {
 		currentSubscriptions: await getSubscriptionsByUser(user),
 		productsByInterval

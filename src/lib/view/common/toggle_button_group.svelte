@@ -5,7 +5,7 @@
 	type ButtonOption = {
 		id: string;
 		label: string;
-		discount?: string;
+		sublabel?: string;
 	};
 
 	export let options: ButtonOption[] = [];
@@ -38,10 +38,8 @@
 					aria-pressed={selected.id === option.id}
 				>
 					{option.label}
-					{#if option.discount}
-						<span class="text-slate-600 text-xs font-['Montserrat'] leading-3"
-							>ahorra {option.discount}</span
-						>
+					{#if option.sublabel}
+						<span class="text-slate-600 text-xs font-['Montserrat'] leading-3">{option.sublabel}</span>
 					{/if}
 				</button>
 			</div>
