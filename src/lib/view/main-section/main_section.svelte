@@ -6,7 +6,7 @@
 	import EscotaButton from '../common/escota_button.svelte';
 </script>
 
-<ContentWrapper classname="w-full h-96 relative" backgroundClassname="bg-white">
+<ContentWrapper classname="h-96 relative" backgroundClassname="bg-white">
 	<img
 		class="absolute right-0 h-full object-cover fade-in"
 		src={escohotadoFumandoImg}

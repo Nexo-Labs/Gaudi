@@ -3,7 +3,7 @@ import { prismaClient } from "../prisma_client.js";
 import type { ProductType } from "$src/lib/domain/prisma-enum-mapping.js";
 import type { Stripe } from "stripe";
 
-type StripePriceWithTypedJson = Omit<
+export type StripePriceWithTypedJson = Omit<
   Prisma.StripePriceGetPayload<{}>,
   'recurring' | 'currencyOptions' | 'tiers' | 'tiersMode' | 'transformQuantity' | 'metadata'
 > & {
@@ -15,7 +15,7 @@ type StripePriceWithTypedJson = Omit<
   metadata: Stripe.Metadata;
 };
 
-type ActiveProduct = Omit<
+export type ActiveProduct = Omit<
   Prisma.StripeProductGetPayload<{
     include: {
       prices: true;
