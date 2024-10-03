@@ -13,22 +13,27 @@ type ContentCMSMap = {
 };
 
 export async function contentCMSList<T extends keyof ContentCMSMap>(
-    type: ContentCMSType, page?: number, limit?: number
+    type: ContentCMSType, 
+    page?: number, 
+    limit?: number,
+    where?: any
 ): Promise<ContentCMSPrismaTyped<ContentCMSMap[T]>[]> {
     limit = limit ?? 10;
     const skip = notNull(page, page => (page - 1) * limit);
     return await prismaClient.contentCMS.findMany({
         skip,
         take: limit,
-        where: { type },
+        where: { type, ...where },
         orderBy: { updatedAt: 'desc' }
     })
 }
 
-export async function getTotal(type: ContentCMSType): Promise<number> {
+export async function getTotal(
+    type: ContentCMSType,
+    where?: any
+): Promise<number> {
     return await prismaClient.contentCMS.count({
-        where: { type },
-        orderBy: { updatedAt: 'desc' }
+        where: { type, ...where }
     })
 }
 

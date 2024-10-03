@@ -1,48 +1,57 @@
-<script lang="ts" generics="T extends ContentCMS">
-
-	import { type ContentCMS } from '$src/lib/domain/cms/content-cms.js';
+<script lang="ts" generics="T extends ContentCMSTableRow">
+	import type { ContentCMSTableRow } from '$src/routes/admin/content/[type]/+page.server.js';
 
 	import {
-	  Table,
-	  TableBody,
-	  TableBodyCell,
-	  TableBodyRow,
-	  TableHead,
-	  TableHeadCell
+		Table,
+		TableBody,
+		TableBodyCell,
+		TableBodyRow,
+		TableHead,
+		TableHeadCell,
+		Checkbox
 	} from 'flowbite-svelte';
-  
-	interface Column<T> {
-		columnName: string;
-		getColumnValue: (item: T) => string;
-	}
-	export let edit: ((item: T) => void) | null = null;
+	import { EditSolid, TrashBinSolid } from 'flowbite-svelte-icons';
+
 	export let data: T[];
-	export let columns: Column<T>[] = []; 
-  </script>
-  
-  <Table tabStyle="pill">
+	export let header: string[];
+	export let onEdit: (item: T) => void;
+	export let onDelete: (id: string) => Promise<boolean>;
+
+	const onDeleteClick = async (id: string) => {
+		const result = await onDelete(id);
+		if (result) {
+			data = data.filter((i) => i.id !== id);
+		}
+	};
+</script>
+
+<Table tabStyle="pill" hoverable={true}>
 	<TableHead>
-	  {#each columns as column}
-		<TableHeadCell>{column.columnName}</TableHeadCell>
-	  {/each}
-	  {#if edit}
-		<TableHeadCell>Acciones</TableHeadCell>
-	  {/if}
+		<TableHeadCell class="!p-4"><Checkbox /></TableHeadCell>
+		{#each header as h}
+			<TableHeadCell>{h}</TableHeadCell>
+		{/each}
+		<TableHeadCell class="!p-4">Acciones</TableHeadCell>
 	</TableHead>
-	
+
 	<TableBody tableBodyClass="divide-y">
-	  {#each data as item}
-		<TableBodyRow>
-		  {#each columns as column}
-			<TableBodyCell>{column.getColumnValue(item)}</TableBodyCell>
-		  {/each}
-		  {#if edit}
-		  <TableBodyCell>
-			<a href="/edit" class="font-medium text-primary-600 hover:underline dark:text-primary-500">Edit</a>
-		  </TableBodyCell>
-		  {/if}
-		</TableBodyRow>
-	  {/each}
+		{#each data as item}
+			<TableBodyRow>
+				<TableBodyCell class="!p-4"><Checkbox /></TableBodyCell>
+				<TableBodyCell>{item.title}</TableBodyCell>
+				{#each Object.values(item.additionalRows) as value}
+					<TableBodyCell>{value}</TableBodyCell>
+				{/each}
+				<TableBodyCell>Acciones</TableBodyCell>
+				<TableBodyCell class="!p-4">
+					<button on:click={() => onEdit(item)}>
+						<EditSolid />
+					</button>
+					<button on:click={() => onDeleteClick(item.id) } >
+						<TrashBinSolid />
+					</button>
+				</TableBodyCell>
+			</TableBodyRow>
+		{/each}
 	</TableBody>
-  </Table>
-  
+</Table>

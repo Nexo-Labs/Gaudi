@@ -1,3 +1,5 @@
+import type { ContentCMSType } from "./prisma-enum-mapping.js";
+
 export const relativeUrls = {
 	home: '/',
 	subscriptions: {
@@ -20,7 +22,9 @@ export const relativeUrls = {
 			videos: '/admin/content/video',
 			articles: '/admin/content/article',
 			books: '/admin/content/book',
-		}
+		},
+		contentEdit: (type: ContentCMSType, id: string): string => `/admin/content/${type.toLowerCase()}/${id}`,
+		contentRemove: (id: string): string => `/admin/content/video/${id}`,
 	},
 	user: {
 		profile: '/user/account'
