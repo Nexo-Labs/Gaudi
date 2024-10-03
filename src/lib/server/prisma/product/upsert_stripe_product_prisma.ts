@@ -23,6 +23,7 @@ export async function upsertProduct(product: Stripe.Product | Stripe.DeletedProd
     updated: product.updated,
     url: product.url,
     images: product.images,
+    metadata: product.metadata ?? {},
     livemode: product.livemode,
     marketingFeatures: product.metadata.marketing_features,
     packageDimensions: product.package_dimensions,

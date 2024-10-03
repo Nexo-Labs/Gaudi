@@ -157,6 +157,7 @@ model StripeProduct {
   packageDimensions    Json?
   shippable            Boolean?
   statementDescriptor  String?
+  metadata             Json
 
   prices               StripePrice[]
 }

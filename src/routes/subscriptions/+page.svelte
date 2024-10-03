@@ -43,8 +43,8 @@
 					<SubscriptionsCard
 						title={product.name}
 						price={priceStr}
-						features={[]}
-						mainCard={product.id === 'prod_QosHF2l3AS4zOH'}
+						features={JSON.parse(product.metadata.features)}
+						mainCard={product.metadata?.prominent == 'true'}
 					>
 						{#if subscriptionByPrice}
 							{#if subscriptionByPrice.canceled?.isCanceled == false}

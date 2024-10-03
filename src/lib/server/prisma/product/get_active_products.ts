@@ -21,9 +21,10 @@ export type ActiveProduct = Omit<
       prices: true;
     };
   }>,
-  'prices'
+  'prices' | 'metadata'
 > & {
   prices: StripePriceWithTypedJson[];
+  metadata: Record<string, string>;
 };
 
 export async function getActiveProducts(type?: ProductType): Promise<ActiveProduct[]> {

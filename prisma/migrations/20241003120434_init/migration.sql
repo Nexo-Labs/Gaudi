@@ -153,6 +153,7 @@ CREATE TABLE "StripeProduct" (
     "packageDimensions" JSONB,
     "shippable" BOOLEAN,
     "statementDescriptor" TEXT,
+    "metadata" JSONB NOT NULL,
 
     CONSTRAINT "StripeProduct_pkey" PRIMARY KEY ("id")
 );
