@@ -17,8 +17,9 @@ export const relativeUrls = {
 		users: '/admin/users',
 		content: {
 			root: '/admin/content',
-			videos: '/admin/content/videos',
-			articles: '/admin/content/artículos',
+			videos: '/admin/content/video',
+			articles: '/admin/content/article',
+			books: '/admin/content/book',
 		}
 	},
 	user: {

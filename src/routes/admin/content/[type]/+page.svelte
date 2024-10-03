@@ -43,7 +43,7 @@
 </script>
 
 <ContentTable
-	data={data.videos.map((video) => video.data)}
+	data={ data.videos.map((video) => video.data) }
 	columns={[
 		{ columnName: 'Id', getColumnValue: (video) => video.id },
 		{ columnName: 'Title', getColumnValue: (video) => video.localized.default.title },

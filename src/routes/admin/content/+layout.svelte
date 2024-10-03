@@ -2,7 +2,7 @@
 	import ContentWrapper from '$src/lib/view/common/content_wrapper.svelte';
 	import H3 from '$src/lib/view/common/headers/h3.svelte';
 	import { Sidebar, SidebarGroup, SidebarItem, SidebarWrapper } from 'flowbite-svelte';
-	import { YoutubeSolid, NewspaperSolid } from 'flowbite-svelte-icons';
+	import { YoutubeSolid, NewspaperSolid, BookSolid } from 'flowbite-svelte-icons';
 
 	import { page } from '$app/stores';
 	import { relativeUrls } from '$src/lib/domain/routing.js';
@@ -30,6 +30,11 @@
 						<SidebarItem label="Artículos" href={relativeUrls.admin.content.articles}>
 							<svelte:fragment slot="icon">
 								<NewspaperSolid class="w-6 h-6 text-gray-500" />
+							</svelte:fragment>
+						</SidebarItem>
+						<SidebarItem label="Libros" href={relativeUrls.admin.content.books}>
+							<svelte:fragment slot="icon">
+								<BookSolid class="w-6 h-6 text-gray-500" />
 							</svelte:fragment>
 						</SidebarItem>
 					</SidebarGroup>

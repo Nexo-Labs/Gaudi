@@ -29,7 +29,7 @@ export const accountMenuBuilder: (user: UserModel) => [MenuSection] = (user) => 
             title: "Administración",
             items: [
                 { text: "Usuarios", href: relativeUrls.admin.users },
-                { text: "Contenido", href: relativeUrls.admin.content.root },
+                { text: "Contenido", href: relativeUrls.admin.content.videos },
             ]
         });
     }
