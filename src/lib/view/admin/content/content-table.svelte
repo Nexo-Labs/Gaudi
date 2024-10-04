@@ -27,23 +27,21 @@
 
 <Table tabStyle="pill" hoverable={true}>
 	<TableHead>
-		<TableHeadCell class="!p-4"><Checkbox /></TableHeadCell>
 		{#each header as h}
 			<TableHeadCell>{h}</TableHeadCell>
 		{/each}
-		<TableHeadCell class="!p-4">Acciones</TableHeadCell>
+		<TableHeadCell>Acciones</TableHeadCell>
 	</TableHead>
 
 	<TableBody tableBodyClass="divide-y">
 		{#each data as item}
 			<TableBodyRow>
-				<TableBodyCell class="!p-4"><Checkbox /></TableBodyCell>
 				<TableBodyCell>{item.title}</TableBodyCell>
 				{#each Object.values(item.additionalRows) as value}
 					<TableBodyCell>{value}</TableBodyCell>
 				{/each}
-				<TableBodyCell>Acciones</TableBodyCell>
-				<TableBodyCell class="!p-4">
+				<TableBodyCell>{item.seeds}</TableBodyCell>
+				<TableBodyCell>
 					<button on:click={() => onEdit(item)}>
 						<EditSolid />
 					</button>

@@ -1,7 +1,7 @@
 import { getUser } from '$src/lib/server/auth.service.js';
 import { error, redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types.js';
-import { getTotal, contentCMSList } from '$src/lib/server/prisma/cms/content-cms-list.js';
+import { getTotal, contentCMSList } from '$src/lib/server/prisma/cms/content-cms-repository.js';
 import { notNull } from '$src/lib/domain/common/optional_helpers.js';
 import { contentCMSTypes, type ContentCMSType } from '$src/lib/domain/prisma-enum-mapping.js';
 import type { ContentCMS, ContentCMSPrismaTyped } from '$src/lib/domain/cms/content-cms.js';
@@ -42,7 +42,7 @@ export type ContentCMSTableRow = {
 function getHeaders(type: ContentCMSType): string[] {
 	if(type === contentCMSTypes.VIDEO) {
 	}
-	return ["Title", "Semillas"]
+	return ["Título", "Semillas"]
 }
 
 function getValue(content: ContentCMSPrismaTyped<ContentCMS>): ContentCMSTableRow | undefined {

@@ -3,8 +3,9 @@
 	import { page } from '$app/stores';
 	import { relativeUrls } from '$src/lib/domain/routing.js';
 	import ContentTable from '$src/lib/view/admin/content/content-table.svelte';
+	import EscotaButton from '$src/lib/view/common/escota_button.svelte';
 	import type { PageData } from './$types.js';
-	import { Pagination } from 'flowbite-svelte';
+	import { Pagination, Button } from 'flowbite-svelte';
 	import { ChevronLeftOutline, ChevronRightOutline } from 'flowbite-svelte-icons';
 	export let data: PageData;
 
@@ -52,15 +53,20 @@
 	}}
 />
 
-{#if totalPages > 1}
-	<Pagination {pages} on:previous={previous} on:next={next} icon>
-		<svelte:fragment slot="prev">
-			<span class="sr-only">Previous</span>
-			<ChevronLeftOutline class="w-2.5 h-2.5" />
-		</svelte:fragment>
-		<svelte:fragment slot="next">
-			<span class="sr-only">Next</span>
-			<ChevronRightOutline class="w-2.5 h-2.5" />
-		</svelte:fragment>
-	</Pagination>
-{/if}
+<div class="inline-flex gap-4 mt-8">
+	{#if totalPages > 1}
+		<Pagination {pages} on:previous={previous} on:next={next} icon>
+			<svelte:fragment slot="prev">
+				<span class="sr-only">Previo</span>
+				<ChevronLeftOutline class="w-2.5 h-2.5" />
+			</svelte:fragment>
+			<svelte:fragment slot="next">
+				<span class="sr-only">Siguiente</span>
+				<ChevronRightOutline class="w-2.5 h-2.5" />
+			</svelte:fragment>
+		</Pagination>
+	{/if}
+	<button on:click={() => goto(`${data.type.toLowerCase()}/create`)}>
+		<EscotaButton text="Agregar" />
+	</button>
+</div>

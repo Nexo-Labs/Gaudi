@@ -5,4 +5,4 @@
 	export let data: PageData;
 </script>
 
-<ContentCMSForm initialFormData={data.contentCMS} type={data.type} />
+<ContentCMSForm type={data.type} />

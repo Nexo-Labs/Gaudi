@@ -4,7 +4,7 @@ import { notNull } from "$src/lib/domain/common/optional_helpers.js";
 import { type ContentCMSType } from "$src/lib/domain/prisma-enum-mapping.js";
 import { prismaClient } from "../prisma_client.js";
 
-type ContentCMSMap = {
+export type ContentCMSMap = {
     VIDEO: VideoContentCMS;
     ARTICLE: VideoContentCMS;
     BOOK: VideoContentCMS;
@@ -34,6 +34,14 @@ export async function getTotal(
 ): Promise<number> {
     return await prismaClient.contentCMS.count({
         where: { type, ...where }
+    })
+}
+
+export async function contentCMSGet<T extends keyof ContentCMSMap>(
+    id: string
+): Promise<ContentCMSPrismaTyped<ContentCMSMap[T]> | undefined> {
+    return await prismaClient.contentCMS.findFirst({
+        where: { id }
     })
 }
 
