@@ -23,7 +23,7 @@ export const relativeUrls = {
 			articles: '/admin/content/article',
 			books: '/admin/content/book',
 		},
-		contentEdit: (type: ContentCMSType, id: string): string => `/admin/content/${type.toLowerCase()}/${id}`,
+		contentForm: (type: ContentCMSType, id?: string | undefined): string => `/admin/content/${type.toLowerCase()}/form${id ? `?id=${id}` : ''}`,
 		contentRemove: (id: string): string => `/admin/content/video/${id}`,
 	},
 	user: {

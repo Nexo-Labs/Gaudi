@@ -1,5 +1,5 @@
 import type { ContentCMSPrismaTyped } from "$src/lib/domain/cms/content-cms.js";
-import type { VideoContentCMS } from "$src/lib/domain/cms/video-content-cms.js";
+import type { VideoContentCMS } from "$src/lib/domain/cms/video/video-content-cms.js";
 import { notNull } from "$src/lib/domain/common/optional_helpers.js";
 import { type ContentCMSType } from "$src/lib/domain/prisma-enum-mapping.js";
 import { prismaClient } from "../prisma_client.js";
@@ -25,6 +25,26 @@ export async function contentCMSList<T extends keyof ContentCMSMap>(
         take: limit,
         where: { type, ...where },
         orderBy: { updatedAt: 'desc' }
+    })
+}
+
+export async function upsertCMSContent<T extends keyof ContentCMSMap>(
+    type: ContentCMSType, 
+    data: ContentCMSMap[T]
+): Promise<void> {
+    const contentPrismaCMS: ContentCMSPrismaTyped<ContentCMSMap[T]> = {
+        id: data.id,
+        type: type,
+        seeds: data.seeds,
+        permissions: [],
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        data
+    };
+    await prismaClient.contentCMS.upsert({
+        where: { id: data.id },
+        update: contentPrismaCMS,
+        create: contentPrismaCMS
     })
 }
 

@@ -1,5 +1,5 @@
 import { updated } from "$app/stores";
-import type { VideoContentCMS } from "$src/lib/domain/cms/video-content-cms.js";
+import type { VideoContentCMS } from "$src/lib/domain/cms/video/video-content-cms.js";
 import { contentCMSTypes } from "$src/lib/domain/prisma-enum-mapping.js";
 import { prismaClient } from "../../prisma_client.js";
 

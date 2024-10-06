@@ -5,7 +5,7 @@ import { getTotal, contentCMSList } from '$src/lib/server/prisma/cms/content-cms
 import { notNull } from '$src/lib/domain/common/optional_helpers.js';
 import { contentCMSTypes, type ContentCMSType } from '$src/lib/domain/prisma-enum-mapping.js';
 import type { ContentCMS, ContentCMSPrismaTyped } from '$src/lib/domain/cms/content-cms.js';
-import type { VideoContentCMS } from '$src/lib/domain/cms/video-content-cms.js';
+import type { VideoContentCMS } from '$src/lib/domain/cms/video/video-content-cms.js';
 
 export const load: PageServerLoad = async ({ locals, url, params }) => {
 	const type = contentCMSTypes[params.type.toUpperCase() as keyof typeof contentCMSTypes];

@@ -46,7 +46,7 @@
 <ContentTable
 	data={data.items}
 	header={data.header}
-	onEdit={(item) => goto(relativeUrls.admin.contentEdit(data.type, item.id))}
+	onEdit={(item) => goto(relativeUrls.admin.contentForm(data.type, item.id))}
 	onDelete={async (id) => {
 		const response = await fetch(relativeUrls.admin.contentRemove(id), { method: 'DELETE' });
 		return response.ok;
@@ -66,7 +66,7 @@
 			</svelte:fragment>
 		</Pagination>
 	{/if}
-	<button on:click={() => goto(`${data.type.toLowerCase()}/create`)}>
+	<button on:click={() => goto(relativeUrls.admin.contentForm(data.type))}>
 		<EscotaButton text="Agregar" />
 	</button>
 </div>

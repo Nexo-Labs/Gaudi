@@ -1,24 +1,22 @@
-import type { ContentCMS, ContentCMSLocalized, ContentCMSPermissions } from "./content-cms.js";
-import { generateMockImageFileContentCMS, type FileContentCMS } from "./file-content-cms.js";
+import type { ContentCMS, ContentCMSLocalized, ContentCMSPermissions } from "../content-cms.js";
+import { generateMockImageFileContentCMS, type FileContentCMS } from "../file-content-cms.js";
 
-export type VideoContentCMS = (
-    | { youtube: VideoContentLinkCMS; vimeo?: VideoContentLinkCMS }
-    | { vimeo: VideoContentLinkCMS; youtube?: VideoContentLinkCMS }
-) & ContentCMS
+export type VideoContentCMS = { youtube?: VideoContentLinkCMS; vimeo?: VideoContentLinkCMS }
+  & ContentCMS
   & ContentCMSLocalized<VideoContentCMSLocalized>
   & { __typename: 'VideoContentCMS' };
 
-interface VideoContentCMSLocalized {
+export interface VideoContentCMSLocalized {
     title: string;
     description: string;
     thumbnail: FileContentCMS;
 }
 
-interface VideoLinkLocalized {
+export interface VideoLinkLocalized {
     href: string;
 }
 
-interface VideoContentLinkCMS extends ContentCMSPermissions, ContentCMSLocalized<VideoLinkLocalized> {
+export interface VideoContentLinkCMS extends ContentCMSPermissions, ContentCMSLocalized<VideoLinkLocalized> {
     type: 'youtube' | 'vimeo';
 }
 
