@@ -3,10 +3,9 @@ import { stripe } from "../stripe_service.js"
 import { syncSubscription } from "../subscriptions/sync_subscription.js"
 import type Stripe from "stripe"
 import { error } from "@sveltejs/kit"
-import { upsertCustomer } from "../../prisma/upsert_stripe_customer_prisma.js"
-import { upsertProduct } from "../../prisma/upsert_stripe_product_prisma.js"
-import { upsertLineItem } from "../../prisma/upsert_stripe_line_item_prisma.js"
-import { upsertStripeCheckout } from "../../prisma/upsert_stripe_checkout_prisma.js"
+import { upsertCustomer } from "../../prisma/user/upsert_stripe_customer_prisma.js"
+import { upsertLineItem } from "../../prisma/price/upsert_stripe_line_item_prisma.js"
+import { upsertStripeCheckout } from "../../prisma/checkout/upsert_stripe_checkout_prisma.js"
 
 export async function syncCheckout(checkout: Stripe.Checkout.Session) {
   const userId = checkout.client_reference_id

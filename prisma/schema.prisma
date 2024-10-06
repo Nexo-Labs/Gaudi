@@ -79,6 +79,7 @@ model StripeSubscription {
   currentPeriodEnd      Int
   currentPeriodStart    Int
   canceledAt            Int?
+  cancelAtPeriodEnd     Boolean
   invoiceId             String?
   description           String?
   trialStart            Int?
@@ -156,6 +157,7 @@ model StripeProduct {
   packageDimensions    Json?
   shippable            Boolean?
   statementDescriptor  String?
+  metadata             Json
 
   prices               StripePrice[]
 }
@@ -227,4 +229,22 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model ContentCMS {
+  id          String @id @default(cuid())
+  type        ContentCMSType
+  data        Json
+  seeds       String[]
+  permissions String[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+enum ContentCMSType {
+  VIDEO
+  ARTICLE
+  BOOK
+  QUOTE
+  PHOTO
 }
