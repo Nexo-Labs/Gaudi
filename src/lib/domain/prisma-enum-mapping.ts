@@ -1,4 +1,4 @@
-import type { StripeSubscriptionStatus, StripeProductType, ContentCMSType as PrismaContentCMSType  } from "@prisma/client";
+import type { StripeSubscriptionStatus, StripeProductTypeType, ContentCMSType as PrismaContentCMSType  } from "@prisma/client";
 
 export const subscriptionStatus: {
 	[k in StripeSubscriptionStatus]: k;
@@ -15,13 +15,13 @@ export const subscriptionStatus: {
 export type SubscriptionStatus = StripeSubscriptionStatus;
 
 export const stripeProductTypes: {
-	[k in StripeProductType]: k;
+	[k in StripeProductTypeType]: k;
 } = {
 	service: 'service',
 	good: 'good'
 } as const;
 
-export type ProductType = StripeProductType;
+export type ProductType = StripeProductTypeType;
 
 export const contentCMSTypes: {
 	[k in PrismaContentCMSType]: k;

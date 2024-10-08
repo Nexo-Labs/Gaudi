@@ -27,7 +27,7 @@ export async function upsertProduct(product: Stripe.Product | Stripe.DeletedProd
     livemode: product.livemode,
     marketingFeatures: product.metadata.marketing_features,
     packageDimensions: product.package_dimensions,
-    shippable: product.shippable,
+    shippable: product.shippable ?? false,
     statementDescriptor: product.statement_descriptor
   };
 

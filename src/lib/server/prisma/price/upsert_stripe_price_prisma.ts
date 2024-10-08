@@ -27,7 +27,7 @@ export async function upsertPrice(price: Stripe.Price) {
     transformQuantity: price.transform_quantity,
     billingScheme: price.billing_scheme,
     created: price.created,
-    liveMode: price.livemode,
+    livemode: price.livemode,
     lookupKey: price.lookup_key,
     product: { connect: { id: productId } }
   };
