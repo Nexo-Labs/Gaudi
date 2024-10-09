@@ -2,15 +2,14 @@ FROM node:latest AS Dependencies
 
 WORKDIR /app
 
-COPY package.json pnpm-lock.yaml ./
+COPY apps/web/package.json apps/web/pnpm-lock.yaml ./
 RUN npm install -g pnpm && pnpm install --frozen-lockfile
-
 
 FROM node:latest AS Build
 WORKDIR /app
 
+COPY apps/web .
 COPY --from=Dependencies /app/node_modules ./node_modules
-COPY . .
 
 RUN npx prisma generate
 RUN npm install -g pnpm && pnpm build
@@ -25,7 +24,7 @@ COPY --from=build /app/build build
 COPY --from=build /app/prisma prisma
 COPY --from=build /app/node_modules/ node_modules/
 COPY --from=build /app/static static
-COPY --from=build /app/scripts/docker_entrypoint.sh scripts/docker_entrypoint.sh
+COPY scripts/docker_entrypoint.sh scripts/docker_entrypoint.sh
 RUN chmod +x /app/scripts/docker_entrypoint.sh
 
 

@@ -7,7 +7,7 @@ services:
       - 3000:3000
     platform: linux/amd64
     env_file:
-      - ./apps/web/.env
+      - .env
     environment:
       PUBLIC_AUTH_KEYCLOAK_ID: ${PUBLIC_AUTH_KEYCLOAK_ID}
       PUBLIC_AUTH_KEYCLOAK_SECRET: ${PUBLIC_AUTH_KEYCLOAK_SECRET}
