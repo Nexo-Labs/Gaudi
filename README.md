@@ -1,58 +1,68 @@
-# create-svelte
+# Svelte-Kit + PayloadCMS Turborepo
 
-Everything you need to build a Svelte library, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
+This is an custom made Turborepo starter.
 
-Read more about creating a library [in the docs](https://kit.svelte.dev/docs/packaging).
+## What's inside?
 
-## Creating a project
+This [Turborepo] includes the following packages/apps:
 
-If you're seeing this, you've probably already done this step. Congrats!
+### Apps
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
+Each app is 100% [TypeScript].
 
-# create a new project in my-app
-npm create svelte@latest my-app
+- `web`: a [Svelte-kit] web app with [UnoCSS] for styling
+- `server`: an [Express] app with [PayloadCMS] and [tRPC] setup
+
+### Packages
+
+- `eslint-config-custom`: `eslint` configurations (includes `eslint-plugin-svelte` and `eslint-config-prettier`)
+
+### Utilities
+
+This Turborepo has some additional tools already setup for you:
+
+- [TypeScript] for static type checking
+- [ESLint] for code linting
+- [Prettier] for code formatting
+
+## Getting Started
+
+This project uses [pnpm].
+
+```sh
+npx degit HanielU/turbo-sk-payload my-app # download the project
+
+cd my-app # navigate into the project
+
+pnpm install # install dependencies
 ```
 
-## Developing
+### Running the apps
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+In the project root and run the following command.
 
-```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+```sh
+pnpm dev
 ```
 
-Everything inside `src/lib` is part of your library, everything inside `src/routes` can be used as a showcase or preview app.
+This will run both the Svelte-kit and Payload apps in parallel.
 
-## Building
+## License
 
-To build your library:
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
 
-```bash
-npm run package
-```
+<!-- initialise all the links used -->
 
-To create a production version of your showcase app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
-
-## Publishing
-
-Go into the `package.json` and give your package the desired name through the `"name"` option. Also consider adding a `"license"` field and point it to a `LICENSE` file which you can create from a template (one popular option is the [MIT license](https://opensource.org/license/mit/)).
-
-To publish your library to [npm](https://www.npmjs.com):
-
-```bash
-npm publish
-```
+[turborepo]: https://turbo.build/repo
+[eslint]: https://eslint.org
+[express]: https://expressjs.com
+[fastify]: https://www.fastify.io
+[payloadcms]: https://www.payloadcms.com
+[prettier]: https://prettier.io
+[prisma]: https://www.prisma.io
+[svelte-kit]: https://kit.svelte.dev
+[unocss]: https://github.com/unocss/unocss
+[trpc]: https://trpc.io
+[typescript]: https://www.typescriptlang.org
+[rust]: https://www.rust-lang.org
+[pnpm]: https://pnpm.io

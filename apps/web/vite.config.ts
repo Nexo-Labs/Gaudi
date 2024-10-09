@@ -5,13 +5,13 @@ import { defineConfig } from 'vite'
 
 export default defineConfig({
 	plugins: [
+		houdini(),
 		sentrySvelteKit({
 			sourceMapsUploadOptions: {
 				org: 'nexo-labs',
 				project: 'escohotado'
 			}
 		}),
-		houdini(),
 		sveltekit()
 	],
 	server: {
