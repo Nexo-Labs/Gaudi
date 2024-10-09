@@ -1,4 +1,4 @@
-name: Build Escohotado Web
+name: Build Escohotado CMS
 
 # This workflow uses actions that are not certified by GitHub.
 # They are provided by a third-party and are governed by
@@ -12,13 +12,13 @@ on:
     branches:
       - main
     paths:
-      - 'apps/web/**'
+      - 'apps/server/**'
 
 env:
   # Use docker.io for Docker Hub if empty
   REGISTRY: ghcr.io
   # github.repository as <account>/<repo>
-  IMAGE_NAME: ${{ github.repository }}
+  IMAGE_NAME: nexo-labs/escohotado-cms
 
 jobs:
   build:
@@ -72,7 +72,7 @@ jobs:
         id: build-and-push
         uses: docker/build-push-action@0565240e2d4ab88bba5387d719585280857ece09 # v5.0.0
         with:
-          context: ./apps/web
+          context: ./apps/server
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
