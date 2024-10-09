@@ -32,6 +32,7 @@ yarn-error.log*
 # mine I added
 build
 dist
+out
 package
 .env
 .env.*

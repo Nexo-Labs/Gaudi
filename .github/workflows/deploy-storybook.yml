@@ -20,13 +20,14 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20.x'
+      - run: npm install -g pnpm
 
       - uses: bitovi/github-actions-storybook-to-github-pages@v1.0.3
 
         env:
           STORYBOOK_FIGMA_ACCESS_TOKEN: ${{ secrets.STORYBOOK_FIGMA_ACCESS_TOKEN }}
         with:
-          install_command: cd apps/web && yarn install
-          build_command: yarn build-storybook
+          install_command: cd apps/web && pnpm install
+          build_command: pnpm build-storybook
           path: apps/web/storybook-static
           checkout: false

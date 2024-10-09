@@ -1,32 +1,37 @@
-FROM node:latest AS Dependencies
+FROM node:latest AS builder
 
 WORKDIR /app
-
-COPY package.json pnpm-lock.yaml ./
-RUN npm install -g pnpm && pnpm install --frozen-lockfile
-
-FROM node:latest AS Build
-WORKDIR /app
+RUN npm install -g pnpm turbo
 
 COPY . .
-COPY --from=Dependencies /app/node_modules ./node_modules
+RUN turbo prune --scope=web --docker
 
+FROM node:latest AS installer
+WORKDIR /app
+RUN npm install -g pnpm
+
+COPY --from=builder /app/out/json/ .
+COPY --from=builder /app/out/pnpm-lock.yaml ./pnpm-lock.yaml
+
+RUN pnpm install
+
+COPY --from=builder /app/out/full/ .
+COPY turbo.json turbo.json
+
+WORKDIR /app/apps/web
+RUN pnpm install
 RUN npx prisma generate
-RUN npm install -g pnpm && pnpm build
+WORKDIR /app/
+RUN pnpm turbo run build --filter=web
 
-FROM node:alpine AS Deploy
+FROM node:alpine AS runner
 WORKDIR /app
 
-ENV NODE_ENV production
-COPY --from=build /app/package.json package.json
-COPY --from=build /app/.svelte-kit .svelte-kit
-COPY --from=build /app/build build
-COPY --from=build /app/prisma prisma
-COPY --from=build /app/node_modules/ node_modules/
-COPY --from=build /app/static static
-COPY scripts/docker_entrypoint.sh scripts/docker_entrypoint.sh
-RUN chmod +x /app/scripts/docker_entrypoint.sh
+COPY --from=installer /app .
+WORKDIR /app/apps/web
 
+COPY apps/web/scripts/docker_entrypoint.sh /docker_entrypoint.sh
+RUN chmod +x /docker_entrypoint.sh
 
-ENTRYPOINT [ "/app/scripts/docker_entrypoint.sh" ]
+ENTRYPOINT [ "/docker_entrypoint.sh" ]
 CMD ["sh", "-c", "node --env-file=/app/.env build"]

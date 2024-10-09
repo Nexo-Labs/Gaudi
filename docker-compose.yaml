@@ -1,8 +1,9 @@
 services:
   server:
     build:
-      context: ./apps/web
-      target: Deploy
+      context: .
+      dockerfile: ./apps/web/Dockerfile
+      target: runner
     ports:
       - 3000:3000
     platform: linux/amd64

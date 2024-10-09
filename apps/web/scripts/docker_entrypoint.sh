@@ -1,4 +1,9 @@
 #!/bin/sh
+# Definir la ruta absoluta donde debe ejecutarse el script
+TARGET_DIR="/app/apps/web"
+
+# Cambiar al directorio especificado
+cd "$TARGET_DIR" || exit 1
 
 # Crear el archivo .env
 touch /app/.env
