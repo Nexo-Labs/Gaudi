@@ -2,13 +2,13 @@ FROM node:latest AS Dependencies
 
 WORKDIR /app
 
-COPY apps/web/package.json apps/web/pnpm-lock.yaml ./
+COPY package.json pnpm-lock.yaml ./
 RUN npm install -g pnpm && pnpm install --frozen-lockfile
 
 FROM node:latest AS Build
 WORKDIR /app
 
-COPY apps/web .
+COPY . .
 COPY --from=Dependencies /app/node_modules ./node_modules
 
 RUN npx prisma generate
