@@ -23,7 +23,6 @@ vite.config.ts.timestamp-*
 
 # Storybook
 storybook-static
-volumes
 .sentryclirc
 stripe.exe
 $houdini
