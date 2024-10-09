@@ -1,7 +1,7 @@
 import { sentrySvelteKit } from '@sentry/sveltekit';
-import { sveltekit } from '@sveltejs/kit/vite';
-import { defineConfig } from 'vitest/config';
-import path from 'path';
+import { sveltekit } from '@sveltejs/kit/vite'
+import houdini from 'houdini/vite'
+import { defineConfig } from 'vite'
 
 export default defineConfig({
 	plugins: [
@@ -11,12 +11,10 @@ export default defineConfig({
 				project: 'escohotado'
 			}
 		}),
+		houdini(),
 		sveltekit()
 	],
 	server: {
 		host: true
-	},
-	test: {
-		include: ['src/**/*.{test,spec}.{js,ts}']
 	}
 });
