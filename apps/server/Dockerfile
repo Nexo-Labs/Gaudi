@@ -5,25 +5,8 @@ WORKDIR /app
 FROM base AS builder
 
 COPY . .
+RUN pnpm install
 RUN turbo prune --scope=server --docker
-RUN rm -rf /app/out/full/*/*/node_modules
-
-FROM base AS installer
-
-RUN npm install -g pnpm
-
-COPY --from=builder /app/out/json/ .
-COPY --from=builder /app/out/pnpm-lock.yaml ./pnpm-lock.yaml
-RUN pnpm install
-
-COPY --from=builder /app/out/full/ .
-COPY turbo.json turbo.json
-
-WORKDIR /app/apps/server
-
-RUN pnpm install
-WORKDIR /app/
-ENV PAYLOAD_CONFIG_PATH=src/payload.config.ts
 RUN pnpm build:server
 
 FROM base AS runner
