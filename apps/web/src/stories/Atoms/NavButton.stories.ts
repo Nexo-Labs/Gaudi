@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/svelte';
-import EscotaButton from '$lib/view/common/escota_button.svelte';
+import { EscotaButton } from 'gaudi';
 
 const meta = {
 	title: 'Escohotado/Atoms/EscotaButton',

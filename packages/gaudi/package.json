@@ -1,0 +1,23 @@
+{
+  "name": "gaudi",
+  "version": "0.0.0",
+  "type": "module",
+  "module": "index.ts",
+  "main": "index.ts",
+  "exports": {
+    "./styles.css": "./dist/index.css",
+    ".": "./index.ts"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "build": "tailwindcss -i ./styles.css -o ./dist/index.css",
+    "dev": "tailwindcss -i ./styles.css -o ./dist/index.css --watch"
+  },
+  "devDependencies": {
+    "svelte": "^4.2.12",
+    "config": "workspace:*",
+    "tailwindcss": "^3.4.13",
+    "postcss": "^8.4.47",
+    "autoprefixer": "^10.4.20"
+  }
+}

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { signIn } from '@auth/sveltekit/client';
 
-	import EscotaButton from '../common/escota_button.svelte';
+	import { EscotaButton } from 'gaudi';
 </script>
 
 <button on:click={() => signIn('keycloak')}>

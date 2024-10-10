@@ -1,5 +1,4 @@
 <script lang="ts">
-	import '../tailwind.css';
 	import ContentWrapper from '$src/lib/view/common/content_wrapper.svelte';
 	import Logo from './signature_logo.svelte';
 	import NavItem from './nav_item.svelte';
@@ -11,7 +10,7 @@
 	import type { Optional } from '$src/lib/domain/common/optional_helpers.js';
 	import { slide } from 'svelte/transition';
 	import { quintOut } from 'svelte/easing';
-	import EscotaButton from '../common/escota_button.svelte';
+	import { EscotaButton } from 'gaudi';
 
 	let isMenuOpen = false;
 	export let user: Optional<UserModel>;

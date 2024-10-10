@@ -1,5 +1,5 @@
 <script lang="ts">
-	import EscotaButton from '../common/escota_button.svelte';
+	import { EscotaButton } from 'gaudi';
 
     export let name: string
     export let toggleMenu: (changeTo?: boolean) => void

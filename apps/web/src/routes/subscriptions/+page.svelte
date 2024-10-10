@@ -2,7 +2,7 @@
 	import { notNull } from '$src/lib/domain/common/optional_helpers.js';
 	import { relativeUrls } from '$src/lib/domain/routing.js';
 	import ContentWrapper from '$src/lib/view/common/content_wrapper.svelte';
-	import EscotaButton from '$src/lib/view/common/escota_button.svelte';
+	import { EscotaButton } from 'gaudi';
 	import H2 from '$src/lib/view/common/headers/h3.svelte';
 	import H4 from '$src/lib/view/common/headers/h4.svelte';
 	import type { PageData } from './$types.js';

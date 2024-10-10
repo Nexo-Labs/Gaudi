@@ -1,9 +1,7 @@
 <script lang="ts">
-	import '../tailwind.css';
-
 	import ContentWrapper from '$src/lib/view/common/content_wrapper.svelte';
 	import escohotadoFumandoImg from '../assets/img/escohotado-fumando.png';
-	import EscotaButton from '../common/escota_button.svelte';
+	import { EscotaButton } from 'gaudi';
 </script>
 
 <ContentWrapper classname="h-96 relative" backgroundClassname="bg-white">
