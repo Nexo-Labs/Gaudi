@@ -3,3 +3,4 @@ build/
 dist/
 volumes/
 out/
+**/node_modules
